@@ -17,117 +17,41 @@ const ManageEmployeeScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={6}>
-                    <TableContainer component={Paper}>
+                <Grid item xs={12} md={12} component={Paper} sx={{ p: 3, mb: 2, borderRadius: 2 }}>
+                    <Typography variant="h5" textAlign="center" color="primary">
+                        Manage Employee
+                    </Typography>
+                    <Grid container spacing={2} mt={2}>
+                        {['Student ID', 'Student Name', 'Address', 'Birthday', 'Mobile'].map((label, index) => (
+                            <Grid item xs={12} md={4} key={index}>
+                                <TextField
+                                    label={label}
+                                    margin="dense"
+                                    fullWidth
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
                         <Table>
                             <TableHead>
-                                <TableRow>
-                                    <TableCell>ID</TableCell>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Address</TableCell>
-                                    <TableCell>Birthday</TableCell>
-                                    <TableCell>Age</TableCell>
-                                    <TableCell>Mobile</TableCell>
-                                    <TableCell>Gender</TableCell>
+                                <TableRow sx={{ backgroundColor: 'primary.main' }}>
+                                    <TableCell sx={{ color: 'white' }}>ID</TableCell>
+                                    <TableCell sx={{ color: 'white' }}>Name</TableCell>
+                                    <TableCell sx={{ color: 'white' }}>Address</TableCell>
+                                    <TableCell sx={{ color: 'white' }}>Birthday</TableCell>
+                                    <TableCell sx={{ color: 'white' }}>Age</TableCell>
+                                    <TableCell sx={{ color: 'white' }}>Mobile</TableCell>
+                                    <TableCell sx={{ color: 'white' }}>Gender</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {/*{studentList.map((row) => (*/}
-                                {/*    <TableRow*/}
-                                {/*        hover*/}
-                                {/*        key={row.studentId}*/}
-                                {/*        onClick={() => {*/}
-                                {/*            handleSelectStudent(row);*/}
-                                {/*        }}*/}
-                                {/*    >*/}
-                                {/*        <TableCell>{row.studentId}</TableCell>*/}
-                                {/*        <TableCell>{row.name}</TableCell>*/}
-                                {/*        <TableCell>{row.address}</TableCell>*/}
-                                {/*        <TableCell>{row.dob}</TableCell>*/}
-                                {/*        <TableCell>{generateAge(row.dob)}</TableCell>*/}
-                                {/*        <TableCell>{row.mobile}</TableCell>*/}
-                                {/*        <TableCell>{row.gender}</TableCell>*/}
-                                {/*    </TableRow>*/}
-                                {/*))}*/}
+                                {/* Add rows here */}
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </Grid>
-                <Grid item xs={12} md={5} p={2} component={Paper}>
-                    <Box>
-                        <Typography variant="h5" textAlign={"center"} color={"GrayText"}>
-                            Manage Student
-                        </Typography>
-                        <TextField
-                            label="Student ID"
-                            // value={formData.studentId}
-                            // onChange={(e) => {
-                            //     setFormData({ ...formData, studentId: e.target.value });
-                            // }}
-                            margin="dense"
-                            fullWidth
-                        />
-                        <TextField
-                            label="Student Name"
-                            // value={formData.name}
-                            // color={errors.includes("name") ? "error" : "success"}
-                            // onChange={(e) => {
-                            //     validateName(e.target.value)
-                            //         ? setErrors([...errors.filter((error) => error !== "name")])
-                            //         : setErrors([...errors, "name"]);
-                            //     setFormData({ ...formData, name: e.target.value });
-                            // }}
-                            margin="dense"
-                            fullWidth
-                        />
-                        <TextField
-                            label="Address"
-                            // value={formData.address}
-                            // color={errors.includes("address") ? "error" : "success"}
-                            // onChange={(e) => {
-                            //     validateAddress(e.target.value)
-                            //         ? setErrors([
-                            //             ...errors.filter((error) => error !== "address"),
-                            //         ])
-                            //         : setErrors([...errors, "address"]);
-                            //     setFormData({ ...formData, address: e.target.value });
-                            // }}
-                            margin="dense"
-                            fullWidth
-                        />
-                        <TextField
-                            label="Birthday"
-                            type="date"
-                            // value={formData.dob}
-                            // onChange={(e) => {
-                            //     setFormData({ ...formData, dob: e.target.value });
-                            // }}
-                            margin="dense"
-                            fullWidth
-                        />
-                        <TextField
-                            label="Mobile"
-                            // value={formData.mobile}
-                            // color={errors.includes("mobile") ? "error" : "success"}
-                            // onChange={(e) => {
-                            //     validateMobile(e.target.value)
-                            //         ? setErrors([...errors.filter((error) => error !== "mobile")])
-                            //         : setErrors([...errors, "mobile"]);
-                            //     setFormData({ ...formData, mobile: e.target.value });
-                            // }}
-                            margin="dense"
-                            fullWidth
-                        />
-                        <Box
-                            sx={{
-                                mt: 2,
-                                display: "flex",
-                                width: "100%",
-                                gap: 2,
-                            }}
-                        >
-                        </Box>
-                    </Box>
                 </Grid>
             </Grid>
         </>

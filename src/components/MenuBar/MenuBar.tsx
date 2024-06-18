@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -14,16 +14,22 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import SettingsIcon from '@mui/icons-material/Settings';
-import {Box, Toolbar as MuiToolbar} from "@mui/material";
+import { Box, Toolbar as MuiToolbar } from "@mui/material";
 import ManageEmployeeScreen from "../../screens/Employee/ManageEmployeeScreen";
 
 const drawerWidth = 240;
 
 export const MenuBar = () => {
+    const [currentScreen, setCurrentScreen] = useState('Dashboard');
+
+    const handleMenuItemClick = (screen: string) => {
+        setCurrentScreen(screen);
+    };
+
     return (
-        <Box sx={{display: 'flex'}}>
-            <CssBaseline/>
-            <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar elevation={0} position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap>
                         BankDash
@@ -35,26 +41,26 @@ export const MenuBar = () => {
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box'},
+                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
                 }}
             >
-                <MuiToolbar/>
-                <Box sx={{overflow: 'auto'}}>
+                <MuiToolbar />
+                <Box sx={{ overflow: 'auto' }}>
                     <List>
-                        {['Dashboard', 'Transactions', 'Accounts', 'Investments', 'Credit Cards', 'Loans', 'Services', 'My Privileges', 'Setting'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>
-                                    {index === 0 && <DashboardIcon/>}
-                                    {index === 1 && <AccountBalanceIcon/>}
-                                    {index === 2 && <AccountBalanceIcon/>}
-                                    {index === 3 && <AttachMoneyIcon/>}
-                                    {index === 4 && <CreditCardIcon/>}
-                                    {index === 5 && <LocalAtmIcon/>}
-                                    {index === 6 && <SettingsIcon/>}
-                                    {index === 7 && <SettingsIcon/>}
-                                    {index === 8 && <SettingsIcon/>}
-                                </ListItemIcon>
-                                <ListItemText primary={text}/>
+                        {[
+                            { text: 'Dashboard', icon: <DashboardIcon />, screen: 'Dashboard' },
+                            { text: 'Transactions', icon: <AccountBalanceIcon />, screen: 'Transactions' },
+                            { text: 'Accounts', icon: <AccountBalanceIcon />, screen: 'Accounts' },
+                            { text: 'Investments', icon: <AttachMoneyIcon />, screen: 'Investments' },
+                            { text: 'Credit Cards', icon: <CreditCardIcon />, screen: 'Credit Cards' },
+                            { text: 'Loans', icon: <LocalAtmIcon />, screen: 'Loans' },
+                            { text: 'Services', icon: <SettingsIcon />, screen: 'Services' },
+                            { text: 'My Privileges', icon: <SettingsIcon />, screen: 'My Privileges' },
+                            { text: 'Setting', icon: <SettingsIcon />, screen: 'Setting' }
+                        ].map(({ text, icon, screen }) => (
+                            <ListItem button key={text} onClick={() => handleMenuItemClick(screen)}>
+                                <ListItemIcon>{icon}</ListItemIcon>
+                                <ListItemText primary={text} />
                             </ListItem>
                         ))}
                     </List>
@@ -65,10 +71,12 @@ export const MenuBar = () => {
                 sx={{
                     flexGrow: 1,
                     p: 3,
-                    mt: 4,
+                    mt: 6,
                 }}
             >
-                <ManageEmployeeScreen/>
+                {currentScreen === 'Dashboard' && <DashboardIcon />}
+                {currentScreen === 'Manage Employee' && <ManageEmployeeScreen />}
+                {/* Add additional screen components here */}
             </Box>
         </Box>
     );

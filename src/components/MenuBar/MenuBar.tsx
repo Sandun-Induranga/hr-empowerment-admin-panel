@@ -32,7 +32,7 @@ export const MenuBar = () => {
             <AppBar elevation={0} position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap>
-                        BankDash
+                        HRES
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -49,7 +49,7 @@ export const MenuBar = () => {
                     <List>
                         {[
                             { text: 'Dashboard', icon: <DashboardIcon />, screen: 'Dashboard' },
-                            { text: 'Transactions', icon: <AccountBalanceIcon />, screen: 'Transactions' },
+                            { text: 'Manage Employees', icon: <AccountBalanceIcon />, screen: 'Manage Employees' },
                             { text: 'Accounts', icon: <AccountBalanceIcon />, screen: 'Accounts' },
                             { text: 'Investments', icon: <AttachMoneyIcon />, screen: 'Investments' },
                             { text: 'Credit Cards', icon: <CreditCardIcon />, screen: 'Credit Cards' },
@@ -75,8 +75,7 @@ export const MenuBar = () => {
                 }}
             >
                 {currentScreen === 'Dashboard' && <DashboardIcon />}
-                {currentScreen === 'Manage Employee' && <ManageEmployeeScreen />}
-                {/* Add additional screen components here */}
+                {currentScreen === 'Manage Employees' && <ManageEmployeeScreen />}
             </Box>
         </Box>
     );

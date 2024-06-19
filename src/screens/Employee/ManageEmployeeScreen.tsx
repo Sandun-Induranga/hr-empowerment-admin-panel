@@ -17,15 +17,16 @@ import axios from "axios";
 const ManageEmployeeScreen = () => {
 
     const [formData, setFormData] = useState<any>({
-        ID: '',
-        Name: '',
-        Address: '',
-        Birthday: '',
-        Age: '',
-        Mobile: '',
-        Gender: '',
-        Position: '',
-        Salary: ''
+        employeeId: '',
+        name: '',
+        address: '',
+        birthday: '',
+        email: '',
+        mobile: '',
+        position: '',
+        department: '',
+        salary: '',
+        gender: '',
     });
 
     const handleInputChange = (e: any) => {
@@ -36,7 +37,7 @@ const ManageEmployeeScreen = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://api.example.com/submit', formData);
+            const response = await axios.post('http://localhost:3000', formData);
             console.log('Form submitted successfully:', response.data);
         } catch (error) {
             console.error('Error submitting the form:', error);
@@ -52,14 +53,14 @@ const ManageEmployeeScreen = () => {
                     </Typography>
                     <form onSubmit={handleSubmit}>
                         <Grid container spacing={2} mt={2}>
-                            {['ID', 'Name', 'Address', 'Birthday', 'Age', 'Mobile', 'Gender', 'Position', 'Salary'].map((label, index) => (
+                            {['Employee Id', 'Name', 'Address', 'Birthday', 'Email', 'Mobile', 'Position', 'Department', 'Salary', 'Gender',].map((label, index) => (
                                 <Grid item xs={12} md={4} key={index}>
                                     <TextField
                                         label={label}
                                         name={label}
                                         margin="dense"
                                         fullWidth
-                                        value={formData[label]}
+                                        value={formData[label.toLowerCase()]}
                                         onChange={handleInputChange}
                                     />
                                 </Grid>

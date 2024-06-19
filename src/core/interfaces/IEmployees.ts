@@ -7,6 +7,6 @@ export interface IEmployees {
     mobile: string;
     position: string;
     department: string;
-    salary: string;
+    salary: number;
     gender: string;
 }

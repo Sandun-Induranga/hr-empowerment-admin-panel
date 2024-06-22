@@ -20,6 +20,7 @@ import ManageAttendanceScreen from "../../screens/Attendance/ManageAttendanceScr
 import BirthdayReminderScreen from "../../screens/BirthdayReminder/BirthdayReminderScreen";
 import LocationTrackerScreen from "../../screens/LocationTracker/LocationTrackerScreen";
 import ManageProjectsScreen from "../../screens/ManageProjects/ManageProjects";
+import DashboardScreen from "../../screens/Dashboard/DashboardScreen";
 
 const drawerWidth = 240;
 
@@ -78,7 +79,7 @@ export const MenuBar = () => {
                     mt: 6,
                 }}
             >
-                {currentScreen === 'Dashboard' && <DashboardIcon />}
+                {currentScreen === 'Dashboard' && <DashboardScreen />}
                 {currentScreen === 'Manage Employees' && <ManageEmployeeScreen />}
                 {currentScreen === 'Attendance' && <ManageAttendanceScreen />}
                 {currentScreen === 'Birthdays' && <BirthdayReminderScreen />}

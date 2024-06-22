@@ -17,17 +17,52 @@ import {
     MenuItem,
     Select,
     FormControl,
-    InputLabel, TextFieldProps
+    InputLabel,
+    Typography,
+    IconButton,
+    Box
 } from "@mui/material";
-import dayjs, { Dayjs } from 'dayjs';
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Typography from "@mui/material/Typography";
-import axios from "axios";
-import { IEmployees } from "../../core/interfaces/IEmployees";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
+import axios from "axios";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { IEmployees } from "../../core/interfaces/IEmployees";
+
+const sampleEmployees: IEmployees[] = [
+    {
+        employeeId: "1",
+        name: "John Doe",
+        address: "Manila",
+        birthday: "2000-01-01",
+        email: "john@example.com",
+        mobile: "09123456789",
+        position: "Engineer",
+        department: "Engineering",
+        salary: 50000,
+        gender: "Male",
+        photo: "https://via.placeholder.com/150"
+    },
+    {
+        employeeId: "2",
+        name: "Jane Smith",
+        address: "Cebu",
+        birthday: "1992-02-02",
+        email: "jane@example.com",
+        mobile: "09123456780",
+        position: "Manager",
+        department: "Management",
+        salary: 60000,
+        gender: "Female",
+        photo: "https://via.placeholder.com/150"
+    }
+];
 
 const ManageEmployeeScreen = () => {
+    const [employees, setEmployees] = useState<IEmployees[]>(sampleEmployees);
     const [formData, setFormData] = useState<IEmployees>({
         employeeId: '',
         name: '',
@@ -39,9 +74,12 @@ const ManageEmployeeScreen = () => {
         department: '',
         salary: 0,
         gender: '',
+        photo: ''
     });
 
     const [open, setOpen] = useState(false);
+    const [viewOpen, setViewOpen] = useState(false);
+    const [selectedEmployee, setSelectedEmployee] = useState<IEmployees | null>(null);
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
@@ -52,11 +90,23 @@ const ManageEmployeeScreen = () => {
         setFormData({ ...formData, birthday: date ? date.toISOString().split('T')[0] : '' });
     };
 
+    const handlePhotoChange = (e: any) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (upload: any) => {
+                setFormData({ ...formData, photo: upload.target.result });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/employees', formData);
             console.log('Form submitted successfully:', response.data);
+            setEmployees([...employees, formData]);
             setOpen(false);
         } catch (error) {
             console.error('Error submitting the form:', error);
@@ -64,10 +114,44 @@ const ManageEmployeeScreen = () => {
     };
 
     const handleClickOpen = () => {
+        setFormData({
+            employeeId: '',
+            name: '',
+            address: '',
+            birthday: '',
+            email: '',
+            mobile: '',
+            position: '',
+            department: '',
+            salary: 0,
+            gender: '',
+            photo: ''
+        });
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleViewOpen = (employee: IEmployees) => {
+        setSelectedEmployee(employee);
+        setViewOpen(true);
+    };
+
+    const handleViewClose = () => {
+        setViewOpen(false);
+        setSelectedEmployee(null);
+    };
+
+    const handleEditOpen = (employee: IEmployees) => {
+        setFormData(employee);
+        setOpen(true);
+    };
+
+    const handleDelete = (employeeId: string) => {
+        setEmployees(employees.filter(employee => employee.employeeId !== employeeId));
+    };
+
+    const handleUpdate = (e: any) => {
+        e.preventDefault();
+        setEmployees(employees.map(employee => employee.employeeId === formData.employeeId ? formData : employee));
         setOpen(false);
     };
 
@@ -96,21 +180,32 @@ const ManageEmployeeScreen = () => {
                                     <TableCell sx={{ color: 'white' }}>Gender</TableCell>
                                     <TableCell sx={{ color: 'white' }}>Position</TableCell>
                                     <TableCell sx={{ color: 'white' }}>Salary</TableCell>
+                                    <TableCell sx={{ color: 'white' }}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {/* Sample data to render in the table */}
-                                {[1, 2, 3, 4].map((id) => (
-                                    <TableRow key={id}>
-                                        <TableCell>{id}</TableCell>
-                                        <TableCell>John Doe</TableCell>
-                                        <TableCell>Manila</TableCell>
-                                        <TableCell>01/01/2000</TableCell>
-                                        <TableCell>21</TableCell>
-                                        <TableCell>09123456789</TableCell>
-                                        <TableCell>Male</TableCell>
-                                        <TableCell>Engineer</TableCell>
-                                        <TableCell>50000</TableCell>
+                                {employees.map((employee) => (
+                                    <TableRow key={employee.employeeId}>
+                                        <TableCell>{employee.employeeId}</TableCell>
+                                        <TableCell>{employee.name}</TableCell>
+                                        <TableCell>{employee.address}</TableCell>
+                                        <TableCell>{employee.birthday}</TableCell>
+                                        <TableCell>{dayjs().year() - dayjs(employee.birthday).year()}</TableCell>
+                                        <TableCell>{employee.mobile}</TableCell>
+                                        <TableCell>{employee.gender}</TableCell>
+                                        <TableCell>{employee.position}</TableCell>
+                                        <TableCell>{employee.salary}</TableCell>
+                                        <TableCell>
+                                            <IconButton color="primary" onClick={() => handleViewOpen(employee)}>
+                                                <VisibilityIcon />
+                                            </IconButton>
+                                            <IconButton color="secondary" onClick={() => handleEditOpen(employee)}>
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton color="error" onClick={() => handleDelete(employee.employeeId)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -118,10 +213,11 @@ const ManageEmployeeScreen = () => {
                     </TableContainer>
                 </Grid>
             </Grid>
-            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+
+            <Dialog open={open} onClose={() => setOpen(false)} maxWidth="md" fullWidth>
                 <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>Add Employee</DialogTitle>
                 <DialogContent sx={{ py: 3 }}>
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={selectedEmployee ? handleUpdate : handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
                                 <TextField
@@ -132,6 +228,7 @@ const ManageEmployeeScreen = () => {
                                     value={formData.employeeId}
                                     onChange={handleInputChange}
                                     sx={{ mb: 2 }}
+                                    disabled={!!selectedEmployee}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -162,7 +259,8 @@ const ManageEmployeeScreen = () => {
                                         label="Birthday"
                                         value={formData.birthday ? dayjs(formData.birthday) : null}
                                         onChange={handleDateChange}
-                                        // renderInput={(params: TextFieldProps) => <TextField {...params} fullWidth margin="dense" sx={{ mb: 2 }} />}
+                                        // renderInput={(params) => <TextField {...params} fullWidth margin="dense"
+                                        //                                     sx={{ mb: 2 }} />}
                                     />
                                 </LocalizationProvider>
                             </Grid>
@@ -235,20 +333,100 @@ const ManageEmployeeScreen = () => {
                                     </Select>
                                 </FormControl>
                             </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                    sx={{ mb: 2 }}
+                                >
+                                    Upload Photo
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={handlePhotoChange}
+                                    />
+                                </Button>
+                                {formData.photo && (
+                                    <img src={formData.photo} alt="Employee" style={{ maxWidth: '100px', maxHeight: '100px', display: 'block' }} />
+                                )}
+                            </Grid>
                         </Grid>
                         <DialogActions>
-                            <Button onClick={handleClose} color="secondary">
+                            <Button onClick={() => setOpen(false)} color="secondary">
                                 Cancel
                             </Button>
                             <Button type="submit" variant="contained" color="primary">
-                                Submit
+                                {selectedEmployee ? "Update" : "Submit"}
                             </Button>
                         </DialogActions>
                     </form>
                 </DialogContent>
             </Dialog>
+
+            {selectedEmployee && (
+                <Dialog open={viewOpen} onClose={handleViewClose} maxWidth="md" fullWidth>
+                    <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>View Employee</DialogTitle>
+                    <DialogContent sx={{ py: 3 }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Employee ID</Typography>
+                                <Typography>{selectedEmployee.employeeId}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Name</Typography>
+                                <Typography>{selectedEmployee.name}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Address</Typography>
+                                <Typography>{selectedEmployee.address}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Birthday</Typography>
+                                <Typography>{selectedEmployee.birthday}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Email</Typography>
+                                <Typography>{selectedEmployee.email}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Mobile</Typography>
+                                <Typography>{selectedEmployee.mobile}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Position</Typography>
+                                <Typography>{selectedEmployee.position}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Department</Typography>
+                                <Typography>{selectedEmployee.department}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Salary</Typography>
+                                <Typography>{selectedEmployee.salary}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6">Gender</Typography>
+                                <Typography>{selectedEmployee.gender}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                {selectedEmployee.photo && (
+                                    <Box>
+                                        <Typography variant="h6">Photo</Typography>
+                                        <img src={selectedEmployee.photo} alt="Employee" style={{ maxWidth: '100px', maxHeight: '100px' }} />
+                                    </Box>
+                                )}
+                            </Grid>
+                        </Grid>
+                        <DialogActions>
+                            <Button onClick={handleViewClose} color="secondary">
+                                Close
+                            </Button>
+                        </DialogActions>
+                    </DialogContent>
+                </Dialog>
+            )}
         </>
     );
-}
+};
 
 export default ManageEmployeeScreen;

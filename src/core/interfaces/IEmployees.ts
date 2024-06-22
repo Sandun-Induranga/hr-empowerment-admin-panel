@@ -9,4 +9,5 @@ export interface IEmployees {
     department: string;
     salary: number;
     gender: string;
+    photo: string;
 }

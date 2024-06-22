@@ -16,6 +16,7 @@ import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Box, Toolbar as MuiToolbar } from "@mui/material";
 import ManageEmployeeScreen from "../../screens/Employee/ManageEmployeeScreen";
+import ManageAttendanceScreen from "../../screens/Attendance/ManageAttendanceScreen";
 
 const drawerWidth = 240;
 
@@ -50,7 +51,7 @@ export const MenuBar = () => {
                         {[
                             { text: 'Dashboard', icon: <DashboardIcon />, screen: 'Dashboard' },
                             { text: 'Manage Employees', icon: <AccountBalanceIcon />, screen: 'Manage Employees' },
-                            { text: 'Accounts', icon: <AccountBalanceIcon />, screen: 'Accounts' },
+                            { text: 'Attendance', icon: <AccountBalanceIcon />, screen: 'Attendance' },
                             { text: 'Investments', icon: <AttachMoneyIcon />, screen: 'Investments' },
                             { text: 'Credit Cards', icon: <CreditCardIcon />, screen: 'Credit Cards' },
                             { text: 'Loans', icon: <LocalAtmIcon />, screen: 'Loans' },
@@ -76,6 +77,7 @@ export const MenuBar = () => {
             >
                 {currentScreen === 'Dashboard' && <DashboardIcon />}
                 {currentScreen === 'Manage Employees' && <ManageEmployeeScreen />}
+                {currentScreen === 'Attendance' && <ManageAttendanceScreen />}
             </Box>
         </Box>
     );

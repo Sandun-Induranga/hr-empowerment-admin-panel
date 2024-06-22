@@ -17,6 +17,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { Box, Toolbar as MuiToolbar } from "@mui/material";
 import ManageEmployeeScreen from "../../screens/Employee/ManageEmployeeScreen";
 import ManageAttendanceScreen from "../../screens/Attendance/ManageAttendanceScreen";
+import BirthdayReminderScreen from "../../screens/BirthdayReminder/BirthdayReminderScreen";
 
 const drawerWidth = 240;
 
@@ -52,7 +53,7 @@ export const MenuBar = () => {
                             { text: 'Dashboard', icon: <DashboardIcon />, screen: 'Dashboard' },
                             { text: 'Manage Employees', icon: <AccountBalanceIcon />, screen: 'Manage Employees' },
                             { text: 'Attendance', icon: <AccountBalanceIcon />, screen: 'Attendance' },
-                            { text: 'Investments', icon: <AttachMoneyIcon />, screen: 'Investments' },
+                            { text: 'Birthdays', icon: <AttachMoneyIcon />, screen: 'Birthdays' },
                             { text: 'Credit Cards', icon: <CreditCardIcon />, screen: 'Credit Cards' },
                             { text: 'Loans', icon: <LocalAtmIcon />, screen: 'Loans' },
                             { text: 'Services', icon: <SettingsIcon />, screen: 'Services' },
@@ -78,6 +79,7 @@ export const MenuBar = () => {
                 {currentScreen === 'Dashboard' && <DashboardIcon />}
                 {currentScreen === 'Manage Employees' && <ManageEmployeeScreen />}
                 {currentScreen === 'Attendance' && <ManageAttendanceScreen />}
+                {currentScreen === 'Birthdays' && <BirthdayReminderScreen />}
             </Box>
         </Box>
     );

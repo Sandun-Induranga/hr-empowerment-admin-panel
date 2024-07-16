@@ -171,39 +171,81 @@ const ManageEmployeeScreen = () => {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>ID</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Name</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Address</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Birthday</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Age</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Mobile</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Gender</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Position</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Salary</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Actions</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>ID</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Name</TableCell>
+                                    <TableCell
+                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Address</TableCell>
+                                    <TableCell
+                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Birthday</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Age</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Mobile</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Gender</TableCell>
+                                    <TableCell
+                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Position</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Salary</TableCell>
+                                    <TableCell
+                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {employees.map((employee) => (
                                     <TableRow key={employee.employeeId}>
-                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.employeeId}</TableCell>
-                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.name}</TableCell>
-                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.address}</TableCell>
-                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.birthday}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.employeeId}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.name}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.address}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.birthday}</TableCell>
                                         <TableCell
-                                            sx={{color: "#232323", fontSize:16}}>{dayjs().year() - dayjs(employee.birthday).year()}</TableCell>
-                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.mobile}</TableCell>
-                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.gender}</TableCell>
-                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.position}</TableCell>
-                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.salary}</TableCell>
+                                            sx={{
+                                                color: "#232323",
+                                                fontSize: 16
+                                            }}>{dayjs().year() - dayjs(employee.birthday).year()}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.mobile}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.gender}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.position}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.salary}</TableCell>
                                         <TableCell>
-                                            <IconButton sx={{color:"#FFBB38"}} onClick={() => handleViewOpen(employee)}>
+                                            <IconButton sx={{color: "#FFBB38"}}
+                                                        onClick={() => handleViewOpen(employee)}>
                                                 <VisibilityIcon/>
                                             </IconButton>
-                                            <IconButton sx={{color:"#16DBCC"}} onClick={() => handleEditOpen(employee)}>
+                                            <IconButton sx={{color: "#16DBCC"}}
+                                                        onClick={() => handleEditOpen(employee)}>
                                                 <EditIcon/>
                                             </IconButton>
-                                            <IconButton sx={{color:"#FE5C73"}} onClick={() => handleDelete(employee.employeeId)}>
+                                            <IconButton sx={{color: "#FE5C73"}}
+                                                        onClick={() => handleDelete(employee.employeeId)}>
                                                 <DeleteIcon/>
                                             </IconButton>
                                         </TableCell>
@@ -367,66 +409,75 @@ const ManageEmployeeScreen = () => {
 
             {selectedEmployee && (
                 <Dialog open={viewOpen} onClose={handleViewClose} maxWidth="md" fullWidth>
-                    <DialogTitle sx={{color: '#333B69', textAlign:"center", fontWeight:500}}>View Employee</DialogTitle>
-                    <DialogContent sx={{py: 3}}>
+                    <DialogTitle
+                        sx={{color: '#333B69', textAlign: "center", fontWeight: 500, bgcolor: '#f5f5f5', pb: 2}}>
+                        View Employee
+                    </DialogTitle>
+                    <DialogContent sx={{py: 3, px: 4, bgcolor: '#fafafa'}}>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Employee ID</Typography>
-                                <Typography>{selectedEmployee.employeeId}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Name</Typography>
-                                <Typography>{selectedEmployee.name}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Address</Typography>
-                                <Typography>{selectedEmployee.address}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Birthday</Typography>
-                                <Typography>{selectedEmployee.birthday}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Email</Typography>
-                                <Typography>{selectedEmployee.email}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Mobile</Typography>
-                                <Typography>{selectedEmployee.mobile}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Position</Typography>
-                                <Typography>{selectedEmployee.position}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Department</Typography>
-                                <Typography>{selectedEmployee.department}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Salary</Typography>
-                                <Typography>{selectedEmployee.salary}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Typography variant="h6">Gender</Typography>
-                                <Typography>{selectedEmployee.gender}</Typography>
-                            </Grid>
-                            <Grid item xs={12} md={6}>
+                            <Grid item xs={12} md={12}>
                                 {selectedEmployee.photo && (
-                                    <Box>
-                                        <Typography variant="h6">Photo</Typography>
+                                    <Box sx={{mt: 2, display: 'flex', justifyContent: 'center'}}>
+                                        {/*<Box sx={{ border: '1px solid #ddd', p: 1, borderRadius: 1, display: 'flex', justifyContent: 'center' }}>*/}
                                         <img src={selectedEmployee.photo} alt="Employee"
                                              style={{maxWidth: '100px', maxHeight: '100px'}}/>
+                                        {/*</Box>*/}
                                     </Box>
                                 )}
                             </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Employee ID</Typography>
+                                <Typography variant="body1"
+                                            sx={{color: '#555'}}>{selectedEmployee.employeeId}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Name</Typography>
+                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.name}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Address</Typography>
+                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.address}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Birthday</Typography>
+                                <Typography variant="body1"
+                                            sx={{color: '#555'}}>{selectedEmployee.birthday}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Email</Typography>
+                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.email}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Mobile</Typography>
+                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.mobile}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Position</Typography>
+                                <Typography variant="body1"
+                                            sx={{color: '#555'}}>{selectedEmployee.position}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Department</Typography>
+                                <Typography variant="body1"
+                                            sx={{color: '#555'}}>{selectedEmployee.department}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Salary</Typography>
+                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.salary}</Typography>
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <Typography variant="h6" sx={{fontWeight: 500}}>Gender</Typography>
+                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.gender}</Typography>
+                            </Grid>
                         </Grid>
-                        <DialogActions>
-                            <Button onClick={handleViewClose} color="secondary">
+                        <DialogActions sx={{pt: 3}}>
+                            <Button onClick={handleViewClose} color="secondary" variant="outlined">
                                 Close
                             </Button>
                         </DialogActions>
                     </DialogContent>
                 </Dialog>
+
             )}
         </>
     );

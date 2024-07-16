@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import {
     Button,
     Grid,
@@ -21,10 +21,10 @@ import {
     TextField,
     Box
 } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from 'dayjs';
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, {Dayjs} from 'dayjs';
 
 interface IEmployee {
     id: string;
@@ -38,21 +38,21 @@ interface IAttendance {
 }
 
 const sampleEmployees: IEmployee[] = [
-    { id: 'E001', name: 'John Doe' },
-    { id: 'E002', name: 'Jane Smith' },
-    { id: 'E003', name: 'Alice Johnson' },
-    { id: 'E004', name: 'Bob Brown' },
+    {id: 'E001', name: 'John Doe'},
+    {id: 'E002', name: 'Jane Smith'},
+    {id: 'E003', name: 'Alice Johnson'},
+    {id: 'E004', name: 'Bob Brown'},
 ];
 
 const sampleAttendanceData: IAttendance[] = [
-    { employeeId: 'E001', date: '2024-06-01', status: 'Present' },
-    { employeeId: 'E002', date: '2024-06-01', status: 'Absent' },
-    { employeeId: 'E003', date: '2024-06-01', status: 'Leave' },
-    { employeeId: 'E004', date: '2024-06-01', status: 'Present' },
-    { employeeId: 'E001', date: '2024-06-02', status: 'Present' },
-    { employeeId: 'E002', date: '2024-06-02', status: 'Present' },
-    { employeeId: 'E003', date: '2024-06-02', status: 'Absent' },
-    { employeeId: 'E004', date: '2024-06-02', status: 'Leave' },
+    {employeeId: 'E001', date: '2024-06-01', status: 'Present'},
+    {employeeId: 'E002', date: '2024-06-01', status: 'Absent'},
+    {employeeId: 'E003', date: '2024-06-01', status: 'Leave'},
+    {employeeId: 'E004', date: '2024-06-01', status: 'Present'},
+    {employeeId: 'E001', date: '2024-06-02', status: 'Present'},
+    {employeeId: 'E002', date: '2024-06-02', status: 'Present'},
+    {employeeId: 'E003', date: '2024-06-02', status: 'Absent'},
+    {employeeId: 'E004', date: '2024-06-02', status: 'Leave'},
 ];
 
 const ManageAttendanceScreen = () => {
@@ -102,11 +102,11 @@ const ManageAttendanceScreen = () => {
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'Present':
-                return 'green';
+                return '#16DBCC';
             case 'Absent':
-                return 'red';
+                return '#FE5C73';
             case 'Leave':
-                return 'yellow';
+                return '#FFBB38';
             default:
                 return 'gray';
         }
@@ -115,30 +115,49 @@ const ManageAttendanceScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={12} component={Paper} sx={{ p: 3, mb: 2, borderRadius: 2 }}>
+                <Grid item xs={12} md={12} component={Paper} sx={{p: 3, mb: 2, borderRadius: 2}}>
                     <Typography variant="h5" textAlign="center" color="primary">
                         Manage Attendance
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+                    <TableContainer component={Paper} sx={{borderRadius: 2}}>
                         <Table>
                             <TableHead>
-                                <TableRow sx={{ backgroundColor: 'primary.main' }}>
-                                    <TableCell sx={{ color: 'white' }}>Employee ID</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Name</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Actions</TableCell>
+                                <TableRow>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Employee
+                                        ID</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Name</TableCell>
+                                    <TableCell
+                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {employees.map((employee) => (
                                     <TableRow key={employee.id}>
-                                        <TableCell>{employee.id}</TableCell>
-                                        <TableCell>{employee.name}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.id}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.name}</TableCell>
                                         <TableCell>
                                             <Button
-                                                variant="contained"
-                                                color="primary"
+                                                variant="outlined"
+                                                sx={{
+                                                    background: "white",
+                                                    color: "#1814F3",
+                                                    fontSize: 16,
+                                                    fontWeight: 400,
+                                                    borderRadius: 100,
+                                                    border: 1,
+                                                    borderColor: "#1814F3",
+                                                    boxShadow: 0
+                                                }}
                                                 onClick={() => handleOpen(employee)}
                                             >
                                                 Mark Attendance
@@ -147,7 +166,17 @@ const ManageAttendanceScreen = () => {
                                                 variant="outlined"
                                                 color="primary"
                                                 onClick={() => handleHistoryOpen(employee)}
-                                                sx={{ ml: 2 }}
+                                                sx={{
+                                                    background: "white",
+                                                    color: "#16DBCC",
+                                                    fontSize: 16,
+                                                    fontWeight: 400,
+                                                    borderRadius: 100,
+                                                    border: 1,
+                                                    borderColor: "#16DBCC",
+                                                    boxShadow: 0,
+                                                    ml: 2
+                                                }}
                                             >
                                                 View History
                                             </Button>
@@ -160,10 +189,10 @@ const ManageAttendanceScreen = () => {
                 </Grid>
             </Grid>
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-                <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>
+                <DialogTitle sx={{bgcolor: 'primary.main', color: 'white'}}>
                     Mark Attendance
                 </DialogTitle>
-                <DialogContent sx={{ py: 3 }}>
+                <DialogContent sx={{py: 3}}>
                     <form>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
@@ -175,7 +204,7 @@ const ManageAttendanceScreen = () => {
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -189,7 +218,7 @@ const ManageAttendanceScreen = () => {
                                 </LocalizationProvider>
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
+                                <FormControl fullWidth margin="dense" sx={{mb: 2}}>
                                     <InputLabel>Status</InputLabel>
                                     <Select
                                         value={status}
@@ -214,25 +243,27 @@ const ManageAttendanceScreen = () => {
                 </DialogActions>
             </Dialog>
             <Dialog open={historyOpen} onClose={handleHistoryClose} maxWidth="md" fullWidth>
-                <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>
+                <DialogTitle sx={{bgcolor: 'primary.main', color: 'white'}}>
                     Attendance History for {selectedEmployee?.name}
                 </DialogTitle>
-                <DialogContent sx={{ py: 3 }}>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                <DialogContent sx={{py: 3}}>
+                    <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
                         {attendanceData
                             .filter(record => record.employeeId === selectedEmployee?.id)
                             .map((record, index) => (
                                 <Box
                                     key={index}
                                     sx={{
-                                        // width: 50,
+                                        mt: 2,
+                                        width: 50,
+                                        padding: 4,
                                         height: 50,
                                         backgroundColor: getStatusColor(record.status),
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         color: 'white',
-                                        borderRadius: 1
+                                        borderRadius: 2
                                     }}
                                 >
                                     {record.date}

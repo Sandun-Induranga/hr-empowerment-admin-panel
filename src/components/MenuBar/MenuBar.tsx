@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -14,7 +14,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Box, Toolbar as MuiToolbar } from "@mui/material";
+import {Box, Toolbar as MuiToolbar} from "@mui/material";
 import ManageEmployeeScreen from "../../screens/Employee/ManageEmployeeScreen";
 import ManageAttendanceScreen from "../../screens/Attendance/ManageAttendanceScreen";
 import BirthdayReminderScreen from "../../screens/BirthdayReminder/BirthdayReminderScreen";
@@ -32,11 +32,12 @@ export const MenuBar = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar elevation={0} position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+        <Box sx={{display: 'flex', fontFamily: "inter"}}>
+            <CssBaseline/>
+            <AppBar elevation={0} position="fixed"
+                    sx={{zIndex: (theme) => theme.zIndex.drawer + 1, background: "white"}}>
                 <Toolbar>
-                    <Typography variant="h6" noWrap>
+                    <Typography variant="h6" noWrap sx={{color: "#343C6A", fontSize: 24}}>
                         HRES
                     </Typography>
                 </Toolbar>
@@ -46,26 +47,26 @@ export const MenuBar = () => {
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+                    [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box'},
                 }}
             >
-                <MuiToolbar />
-                <Box sx={{ overflow: 'auto' }}>
+                <MuiToolbar/>
+                <Box sx={{overflow: 'auto'}}>
                     <List>
                         {[
-                            { text: 'Dashboard', icon: <DashboardIcon />, screen: 'Dashboard' },
-                            { text: 'Manage Employees', icon: <AccountBalanceIcon />, screen: 'Manage Employees' },
-                            { text: 'Attendance', icon: <AccountBalanceIcon />, screen: 'Attendance' },
-                            { text: 'Birthdays', icon: <AttachMoneyIcon />, screen: 'Birthdays' },
-                            { text: 'Location Tracker', icon: <CreditCardIcon />, screen: 'Location Tracker' },
-                            { text: 'Projects', icon: <LocalAtmIcon />, screen: 'Projects' },
-                            { text: 'Services', icon: <SettingsIcon />, screen: 'Services' },
-                            { text: 'My Privileges', icon: <SettingsIcon />, screen: 'My Privileges' },
-                            { text: 'Setting', icon: <SettingsIcon />, screen: 'Setting' }
-                        ].map(({ text, icon, screen }) => (
+                            {text: 'Dashboard', icon: <DashboardIcon/>, screen: 'Dashboard'},
+                            {text: 'Manage Employees', icon: <AccountBalanceIcon/>, screen: 'Manage Employees'},
+                            {text: 'Attendance', icon: <AccountBalanceIcon/>, screen: 'Attendance'},
+                            {text: 'Birthdays', icon: <AttachMoneyIcon/>, screen: 'Birthdays'},
+                            {text: 'Location Tracker', icon: <CreditCardIcon/>, screen: 'Location Tracker'},
+                            {text: 'Projects', icon: <LocalAtmIcon/>, screen: 'Projects'},
+                            {text: 'Services', icon: <SettingsIcon/>, screen: 'Services'},
+                            {text: 'My Privileges', icon: <SettingsIcon/>, screen: 'My Privileges'},
+                            {text: 'Setting', icon: <SettingsIcon/>, screen: 'Setting'}
+                        ].map(({text, icon, screen}) => (
                             <ListItem button key={text} onClick={() => handleMenuItemClick(screen)}>
                                 <ListItemIcon>{icon}</ListItemIcon>
-                                <ListItemText primary={text} />
+                                <ListItemText primary={text}/>
                             </ListItem>
                         ))}
                     </List>
@@ -77,14 +78,16 @@ export const MenuBar = () => {
                     flexGrow: 1,
                     p: 3,
                     mt: 6,
+                    backgroundColor: "#F5F5F5",
+                    minHeight: '94vh',
                 }}
             >
-                {currentScreen === 'Dashboard' && <DashboardScreen />}
-                {currentScreen === 'Manage Employees' && <ManageEmployeeScreen />}
-                {currentScreen === 'Attendance' && <ManageAttendanceScreen />}
-                {currentScreen === 'Birthdays' && <BirthdayReminderScreen />}
-                {currentScreen === 'Location Tracker' && <LocationTrackerScreen />}
-                {currentScreen === 'Projects' && <ManageProjectsScreen />}
+                {currentScreen === 'Dashboard' && <DashboardScreen/>}
+                {currentScreen === 'Manage Employees' && <ManageEmployeeScreen/>}
+                {currentScreen === 'Attendance' && <ManageAttendanceScreen/>}
+                {currentScreen === 'Birthdays' && <BirthdayReminderScreen/>}
+                {currentScreen === 'Location Tracker' && <LocationTrackerScreen/>}
+                {currentScreen === 'Projects' && <ManageProjectsScreen/>}
             </Box>
         </Box>
     );

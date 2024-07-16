@@ -38,7 +38,8 @@ const sampleEmployees: IEmployee[] = [
     { id: 'E001', name: 'John Doe', latitude: 6.0329, longitude: 80.2168 },
     { id: 'E002', name: 'Jane Smith', latitude: 34.0522, longitude: -118.2437 },
     { id: 'E003', name: 'Alice Johnson', latitude: 40.7128, longitude: -74.0060 },
-    { id: 'E004', name: 'Bob Brown', latitude: 51.5074, longitude: -0.1278 }
+    { id: 'E004', name: 'Bob Brown', latitude: 51.5074, longitude: -0.1278 },
+    { id: 'E005', name: 'Test Last', latitude: 6.8757316, longitude: 79.9001616 }
 ];
 
 const EmployeeLocationTracker = () => {

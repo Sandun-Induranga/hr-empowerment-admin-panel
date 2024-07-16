@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {
     Button,
     Grid,
@@ -22,15 +22,15 @@ import {
     IconButton,
     Box
 } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, {Dayjs} from "dayjs";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { IEmployees } from "../../core/interfaces/IEmployees";
+import {IEmployees} from "../../core/interfaces/IEmployees";
 
 const sampleEmployees: IEmployees[] = [
     {
@@ -82,12 +82,12 @@ const ManageEmployeeScreen = () => {
     const [selectedEmployee, setSelectedEmployee] = useState<IEmployees | null>(null);
 
     const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        const {name, value} = e.target;
+        setFormData({...formData, [name]: value});
     };
 
     const handleDateChange = (date: Dayjs | null) => {
-        setFormData({ ...formData, birthday: date ? date.toISOString().split('T')[0] : '' });
+        setFormData({...formData, birthday: date ? date.toISOString().split('T')[0] : ''});
     };
 
     const handlePhotoChange = (e: any) => {
@@ -95,7 +95,7 @@ const ManageEmployeeScreen = () => {
         if (file) {
             const reader = new FileReader();
             reader.onload = (upload: any) => {
-                setFormData({ ...formData, photo: upload.target.result });
+                setFormData({...formData, photo: upload.target.result});
             };
             reader.readAsDataURL(file);
         }
@@ -158,52 +158,53 @@ const ManageEmployeeScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={12} component={Paper} sx={{ p: 3, mb: 2, borderRadius: 2 }}>
+                <Grid item xs={12} md={12} component={Paper} sx={{p: 3, mb: 2, borderRadius: 2}}>
                     <Typography variant="h5" textAlign="center" color="primary">
                         Manage Employee
                     </Typography>
-                    <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{ mt: 2 }}>
+                    <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{mt: 2}}>
                         Add Employee
                     </Button>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+                    <TableContainer component={Paper} sx={{borderRadius: 2}}>
                         <Table>
                             <TableHead>
-                                <TableRow sx={{ backgroundColor: 'primary.main' }}>
-                                    <TableCell sx={{ color: 'white' }}>ID</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Name</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Address</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Birthday</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Age</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Mobile</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Gender</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Position</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Salary</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Actions</TableCell>
+                                <TableRow>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>ID</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Name</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Address</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Birthday</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Age</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Mobile</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Gender</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Position</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Salary</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize:16, fontWeight:400}}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {employees.map((employee) => (
                                     <TableRow key={employee.employeeId}>
-                                        <TableCell>{employee.employeeId}</TableCell>
-                                        <TableCell>{employee.name}</TableCell>
-                                        <TableCell>{employee.address}</TableCell>
-                                        <TableCell>{employee.birthday}</TableCell>
-                                        <TableCell>{dayjs().year() - dayjs(employee.birthday).year()}</TableCell>
-                                        <TableCell>{employee.mobile}</TableCell>
-                                        <TableCell>{employee.gender}</TableCell>
-                                        <TableCell>{employee.position}</TableCell>
-                                        <TableCell>{employee.salary}</TableCell>
+                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.employeeId}</TableCell>
+                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.name}</TableCell>
+                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.address}</TableCell>
+                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.birthday}</TableCell>
+                                        <TableCell
+                                            sx={{color: "#232323", fontSize:16}}>{dayjs().year() - dayjs(employee.birthday).year()}</TableCell>
+                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.mobile}</TableCell>
+                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.gender}</TableCell>
+                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.position}</TableCell>
+                                        <TableCell sx={{color: "#232323", fontSize:16, fontWeight:400}}>{employee.salary}</TableCell>
                                         <TableCell>
-                                            <IconButton color="primary" onClick={() => handleViewOpen(employee)}>
-                                                <VisibilityIcon />
+                                            <IconButton sx={{color:"#FFBB38"}} onClick={() => handleViewOpen(employee)}>
+                                                <VisibilityIcon/>
                                             </IconButton>
-                                            <IconButton color="secondary" onClick={() => handleEditOpen(employee)}>
-                                                <EditIcon />
+                                            <IconButton sx={{color:"#16DBCC"}} onClick={() => handleEditOpen(employee)}>
+                                                <EditIcon/>
                                             </IconButton>
-                                            <IconButton color="error" onClick={() => handleDelete(employee.employeeId)}>
-                                                <DeleteIcon />
+                                            <IconButton sx={{color:"#FE5C73"}} onClick={() => handleDelete(employee.employeeId)}>
+                                                <DeleteIcon/>
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -215,8 +216,8 @@ const ManageEmployeeScreen = () => {
             </Grid>
 
             <Dialog open={open} onClose={() => setOpen(false)} maxWidth="md" fullWidth>
-                <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>Add Employee</DialogTitle>
-                <DialogContent sx={{ py: 3 }}>
+                <DialogTitle sx={{bgcolor: 'primary.main', color: 'white'}}>Add Employee</DialogTitle>
+                <DialogContent sx={{py: 3}}>
                     <form onSubmit={selectedEmployee ? handleUpdate : handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
@@ -227,7 +228,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.employeeId}
                                     onChange={handleInputChange}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                     disabled={!!selectedEmployee}
                                 />
                             </Grid>
@@ -239,7 +240,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.name}
                                     onChange={handleInputChange}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -250,7 +251,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.address}
                                     onChange={handleInputChange}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -272,7 +273,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -283,7 +284,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.mobile}
                                     onChange={handleInputChange}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -294,7 +295,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.position}
                                     onChange={handleInputChange}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -305,7 +306,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.department}
                                     onChange={handleInputChange}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -316,11 +317,11 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.salary}
                                     onChange={handleInputChange}
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
+                                <FormControl fullWidth margin="dense" sx={{mb: 2}}>
                                     <InputLabel>Gender</InputLabel>
                                     <Select
                                         name="gender"
@@ -337,7 +338,7 @@ const ManageEmployeeScreen = () => {
                                 <Button
                                     variant="contained"
                                     component="label"
-                                    sx={{ mb: 2 }}
+                                    sx={{mb: 2}}
                                 >
                                     Upload Photo
                                     <input
@@ -347,7 +348,8 @@ const ManageEmployeeScreen = () => {
                                     />
                                 </Button>
                                 {formData.photo && (
-                                    <img src={formData.photo} alt="Employee" style={{ maxWidth: '100px', maxHeight: '100px', display: 'block' }} />
+                                    <img src={formData.photo} alt="Employee"
+                                         style={{maxWidth: '100px', maxHeight: '100px', display: 'block'}}/>
                                 )}
                             </Grid>
                         </Grid>
@@ -365,8 +367,8 @@ const ManageEmployeeScreen = () => {
 
             {selectedEmployee && (
                 <Dialog open={viewOpen} onClose={handleViewClose} maxWidth="md" fullWidth>
-                    <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>View Employee</DialogTitle>
-                    <DialogContent sx={{ py: 3 }}>
+                    <DialogTitle sx={{color: '#333B69', textAlign:"center", fontWeight:500}}>View Employee</DialogTitle>
+                    <DialogContent sx={{py: 3}}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
                                 <Typography variant="h6">Employee ID</Typography>
@@ -412,7 +414,8 @@ const ManageEmployeeScreen = () => {
                                 {selectedEmployee.photo && (
                                     <Box>
                                         <Typography variant="h6">Photo</Typography>
-                                        <img src={selectedEmployee.photo} alt="Employee" style={{ maxWidth: '100px', maxHeight: '100px' }} />
+                                        <img src={selectedEmployee.photo} alt="Employee"
+                                             style={{maxWidth: '100px', maxHeight: '100px'}}/>
                                     </Box>
                                 )}
                             </Grid>

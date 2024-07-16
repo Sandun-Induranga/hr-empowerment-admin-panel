@@ -35,7 +35,7 @@ export const MenuBar = () => {
         <Box sx={{display: 'flex', fontFamily: "inter"}}>
             <CssBaseline/>
             <AppBar elevation={0} position="fixed"
-                    sx={{zIndex: (theme) => theme.zIndex.drawer + 1, background: "white"}}>
+                    sx={{background: "white"}}>
                 <Toolbar>
                     <Typography variant="h6" noWrap sx={{color: "#343C6A", fontSize: 24}}>
                         HRES
@@ -50,19 +50,60 @@ export const MenuBar = () => {
                     [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box'},
                 }}
             >
+                <Toolbar>
+                    <Typography variant="h6" noWrap sx={{color: "#343C6A", fontSize: 24}}>
+                        HRES
+                    </Typography>
+                </Toolbar>
                 <MuiToolbar/>
                 <Box sx={{overflow: 'auto'}}>
-                    <List>
+                    <List sx={{color: "#B1B1B1", fontSize: 18}}>
                         {[
-                            {text: 'Dashboard', icon: <DashboardIcon/>, screen: 'Dashboard'},
-                            {text: 'Manage Employees', icon: <AccountBalanceIcon/>, screen: 'Manage Employees'},
-                            {text: 'Attendance', icon: <AccountBalanceIcon/>, screen: 'Attendance'},
-                            {text: 'Birthdays', icon: <AttachMoneyIcon/>, screen: 'Birthdays'},
-                            {text: 'Location Tracker', icon: <CreditCardIcon/>, screen: 'Location Tracker'},
-                            {text: 'Projects', icon: <LocalAtmIcon/>, screen: 'Projects'},
-                            {text: 'Services', icon: <SettingsIcon/>, screen: 'Services'},
-                            {text: 'My Privileges', icon: <SettingsIcon/>, screen: 'My Privileges'},
-                            {text: 'Setting', icon: <SettingsIcon/>, screen: 'Setting'}
+                            {
+                                text: 'Dashboard',
+                                icon: <DashboardIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'Dashboard'
+                            },
+                            {
+                                text: 'Manage Employees',
+                                icon: <AccountBalanceIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'Manage Employees'
+                            },
+                            {
+                                text: 'Attendance',
+                                icon: <AccountBalanceIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'Attendance'
+                            },
+                            {
+                                text: 'Birthdays',
+                                icon: <AttachMoneyIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'Birthdays'
+                            },
+                            {
+                                text: 'Location Tracker',
+                                icon: <CreditCardIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'Location Tracker'
+                            },
+                            {
+                                text: 'Projects',
+                                icon: <LocalAtmIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'Projects'
+                            },
+                            {
+                                text: 'Services',
+                                icon: <SettingsIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'Services'
+                            },
+                            {
+                                text: 'My Privileges',
+                                icon: <SettingsIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'My Privileges'
+                            },
+                            {
+                                text: 'Setting',
+                                icon: <SettingsIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                screen: 'Setting'
+                            }
                         ].map(({text, icon, screen}) => (
                             <ListItem button key={text} onClick={() => handleMenuItemClick(screen)}>
                                 <ListItemIcon>{icon}</ListItemIcon>
@@ -78,7 +119,7 @@ export const MenuBar = () => {
                     flexGrow: 1,
                     p: 3,
                     mt: 6,
-                    backgroundColor: "#F5F5F5",
+                    backgroundColor: "#E6EFF5",
                     minHeight: '94vh',
                 }}
             >

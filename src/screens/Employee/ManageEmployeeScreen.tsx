@@ -158,13 +158,14 @@ const ManageEmployeeScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={12} component={Paper} sx={{p: 3, mb: 2, borderRadius: 2}}>
-                    <Typography variant="h5" textAlign="center" color="primary">
-                        Manage Employee
-                    </Typography>
-                    <Button variant="contained" color="primary" onClick={handleClickOpen} sx={{mt: 2}}>
-                        Add Employee
-                    </Button>
+                <Grid item xs={12} md={4} component={Paper} sx={{ mb: 2, borderRadius: 100}}>
+                    {/*    Search bar  */}
+                    <TextField
+                        label={'Search Employee'}
+                        variant="outlined"
+                        fullWidth
+                        sx={{borderRadius: 100}}
+                    />
                 </Grid>
                 <Grid item xs={12} md={12}>
                     <TableContainer component={Paper} elevation={0} sx={{borderRadius: 8}}>

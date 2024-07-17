@@ -76,24 +76,43 @@ const EmployeeLocationTracker = () => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <TableContainer component={Paper} sx={{ borderRadius: 2 }}>
+                    <TableContainer component={Paper} elevation={0} sx={{borderRadius: 8}}>
                         <Table>
                             <TableHead>
-                                <TableRow sx={{ backgroundColor: 'primary.main' }}>
-                                    <TableCell sx={{ color: 'white' }}>Employee ID</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Name</TableCell>
-                                    <TableCell sx={{ color: 'white' }}>Actions</TableCell>
+                                <TableRow>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Employee ID</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Name</TableCell>
+                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {employees.map((employee) => (
                                     <TableRow key={employee.id}>
-                                        <TableCell>{employee.id}</TableCell>
-                                        <TableCell>{employee.name}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.id}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{employee.name}</TableCell>
                                         <TableCell>
                                             <Button
                                                 variant="contained"
                                                 color="primary"
+                                                sx={{
+                                                    background: "white",
+                                                    color: "#16DBCC",
+                                                    fontSize: 16,
+                                                    fontWeight: 400,
+                                                    borderRadius: 100,
+                                                    border: 1,
+                                                    borderColor: "#16DBCC",
+                                                    boxShadow: 0,
+                                                    ml: 2
+                                                }}
                                                 onClick={() => handleOpen(employee)}
                                             >
                                                 View Location

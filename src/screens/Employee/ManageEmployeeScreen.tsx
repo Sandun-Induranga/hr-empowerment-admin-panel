@@ -167,7 +167,7 @@ const ManageEmployeeScreen = () => {
                     </Button>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                    <TableContainer component={Paper} sx={{borderRadius: 2}}>
+                    <TableContainer component={Paper} elevation={0} sx={{borderRadius: 8}}>
                         <Table>
                             <TableHead>
                                 <TableRow>

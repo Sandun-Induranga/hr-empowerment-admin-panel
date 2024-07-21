@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -14,7 +14,8 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import SettingsIcon from '@mui/icons-material/Settings';
-import {Box, Toolbar as MuiToolbar} from "@mui/material";
+import LogoutIcon from '@mui/icons-material/Logout';
+import { Box, Avatar, IconButton, Toolbar as MuiToolbar } from "@mui/material";
 import ManageEmployeeScreen from "../../screens/Employee/ManageEmployeeScreen";
 import ManageAttendanceScreen from "../../screens/Attendance/ManageAttendanceScreen";
 import BirthdayReminderScreen from "../../screens/BirthdayReminder/BirthdayReminderScreen";
@@ -31,15 +32,28 @@ export const MenuBar = () => {
         setCurrentScreen(screen);
     };
 
+    const handleLogout = () => {
+        // Implement logout logic here
+        console.log('Logout clicked');
+    };
+
     return (
-        <Box sx={{display: 'flex', fontFamily: "inter"}}>
-            <CssBaseline/>
-            <AppBar elevation={0} position="fixed"
-                    sx={{background: "white"}}>
-                <Toolbar>
-                    <Typography variant="h6" noWrap sx={{color: "#343C6A", fontSize: 24}}>
+        <Box sx={{ display: 'flex', fontFamily: "inter" }}>
+            <CssBaseline />
+            <AppBar elevation={0} position="fixed" sx={{ background: "white" }}>
+                <Toolbar sx={{ justifyContent: "space-between" }}>
+                    <Typography variant="h6" noWrap sx={{ color: "#343C6A", fontSize: 24 }}>
                         HRES
                     </Typography>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Typography variant="body1" sx={{ color: "#343C6A", fontSize: 16, marginRight: 2 }}>
+                            John Doe
+                        </Typography>
+                        <Avatar alt="John Doe" src="https://via.placeholder.com/150" sx={{ marginRight: 2 }} />
+                        <IconButton onClick={handleLogout} color="inherit">
+                            <LogoutIcon sx={{ color: "#343C6A" }} />
+                        </IconButton>
+                    </Box>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -47,67 +61,67 @@ export const MenuBar = () => {
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
-                    [`& .MuiDrawer-paper`]: {width: drawerWidth, boxSizing: 'border-box'},
+                    [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
                 }}
             >
                 <Toolbar>
-                    <Typography variant="h6" noWrap sx={{color: "#343C6A", fontSize: 24}}>
+                    <Typography variant="h6" noWrap sx={{ color: "#343C6A", fontSize: 24 }}>
                         HRES
                     </Typography>
                 </Toolbar>
-                <MuiToolbar/>
-                <Box sx={{overflow: 'auto'}}>
-                    <List sx={{color: "#B1B1B1", fontSize: 18}}>
+                <MuiToolbar />
+                <Box sx={{ overflow: 'auto' }}>
+                    <List sx={{ color: "#B1B1B1", fontSize: 18 }}>
                         {[
                             {
                                 text: 'Dashboard',
-                                icon: <DashboardIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <DashboardIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Dashboard'
                             },
                             {
                                 text: 'Manage Employees',
-                                icon: <AccountBalanceIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <AccountBalanceIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Manage Employees'
                             },
                             {
                                 text: 'Attendance',
-                                icon: <AccountBalanceIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <AccountBalanceIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Attendance'
                             },
                             {
                                 text: 'Birthdays',
-                                icon: <AttachMoneyIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <AttachMoneyIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Birthdays'
                             },
                             {
                                 text: 'Location Tracker',
-                                icon: <CreditCardIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <CreditCardIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Location Tracker'
                             },
                             {
                                 text: 'Projects',
-                                icon: <LocalAtmIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <LocalAtmIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Projects'
                             },
                             {
                                 text: 'Services',
-                                icon: <SettingsIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <SettingsIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Services'
                             },
                             {
                                 text: 'My Privileges',
-                                icon: <SettingsIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <SettingsIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'My Privileges'
                             },
                             {
                                 text: 'Setting',
-                                icon: <SettingsIcon sx={{color: "#B1B1B1", fontSize: 18}}/>,
+                                icon: <SettingsIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Setting'
                             }
-                        ].map(({text, icon, screen}) => (
+                        ].map(({ text, icon, screen }) => (
                             <ListItem button key={text} onClick={() => handleMenuItemClick(screen)}>
                                 <ListItemIcon>{icon}</ListItemIcon>
-                                <ListItemText primary={text}/>
+                                <ListItemText primary={text} />
                             </ListItem>
                         ))}
                     </List>
@@ -123,12 +137,12 @@ export const MenuBar = () => {
                     minHeight: '94vh',
                 }}
             >
-                {currentScreen === 'Dashboard' && <DashboardScreen/>}
-                {currentScreen === 'Manage Employees' && <ManageEmployeeScreen/>}
-                {currentScreen === 'Attendance' && <ManageAttendanceScreen/>}
-                {currentScreen === 'Birthdays' && <BirthdayReminderScreen/>}
-                {currentScreen === 'Location Tracker' && <LocationTrackerScreen/>}
-                {currentScreen === 'Projects' && <ManageProjectsScreen/>}
+                {currentScreen === 'Dashboard' && <DashboardScreen />}
+                {currentScreen === 'Manage Employees' && <ManageEmployeeScreen />}
+                {currentScreen === 'Attendance' && <ManageAttendanceScreen />}
+                {currentScreen === 'Birthdays' && <BirthdayReminderScreen />}
+                {currentScreen === 'Location Tracker' && <LocationTrackerScreen />}
+                {currentScreen === 'Projects' && <ManageProjectsScreen />}
             </Box>
         </Box>
     );

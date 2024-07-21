@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
     Button,
     Grid,
@@ -22,15 +22,15 @@ import {
     IconButton,
     Box
 } from "@mui/material";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import {LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, {Dayjs} from "dayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {IEmployees} from "../../core/interfaces/IEmployees";
+import { IEmployees } from "../../core/interfaces/IEmployees";
 
 const sampleEmployees: IEmployees[] = [
     {
@@ -82,12 +82,12 @@ const ManageEmployeeScreen = () => {
     const [selectedEmployee, setSelectedEmployee] = useState<IEmployees | null>(null);
 
     const handleInputChange = (e: any) => {
-        const {name, value} = e.target;
-        setFormData({...formData, [name]: value});
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
     };
 
     const handleDateChange = (date: Dayjs | null) => {
-        setFormData({...formData, birthday: date ? date.toISOString().split('T')[0] : ''});
+        setFormData({ ...formData, birthday: date ? date.toISOString().split('T')[0] : '' });
     };
 
     const handlePhotoChange = (e: any) => {
@@ -95,7 +95,7 @@ const ManageEmployeeScreen = () => {
         if (file) {
             const reader = new FileReader();
             reader.onload = (upload: any) => {
-                setFormData({...formData, photo: upload.target.result});
+                setFormData({ ...formData, photo: upload.target.result });
             };
             reader.readAsDataURL(file);
         }
@@ -158,34 +158,42 @@ const ManageEmployeeScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={4} component={Paper} sx={{ mb: 2, borderRadius: 100}}>
-                    {/*    Search bar  */}
+                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{ mb: 2, borderRadius: 0 }}>
+                    {/* Search bar */}
                     <TextField
                         label={'Search Employee'}
                         variant="outlined"
                         fullWidth
-                        sx={{borderRadius: 100}}
+                        sx={{ borderRadius: 0 }}
+                        InputProps={{
+                            sx: {
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                    border: 'none'
+                                }
+                            }
+                        }}
                     />
                 </Grid>
+                <Grid item xs={12} md={12} sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                    <Button variant="contained" color="primary" onClick={handleClickOpen}>
+                        Add Employee
+                    </Button>
+                </Grid>
                 <Grid item xs={12} md={12}>
-                    <TableContainer component={Paper} elevation={0} sx={{borderRadius: 8}}>
+                    <TableContainer component={Paper} elevation={0} sx={{ borderRadius: 8 }}>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>ID</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Name</TableCell>
-                                    <TableCell
-                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Address</TableCell>
-                                    <TableCell
-                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Birthday</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Age</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Mobile</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Gender</TableCell>
-                                    <TableCell
-                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Position</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Salary</TableCell>
-                                    <TableCell
-                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Actions</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>ID</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Name</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Address</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Birthday</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Age</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Mobile</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Gender</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Position</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Salary</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -211,11 +219,10 @@ const ManageEmployeeScreen = () => {
                                             fontSize: 16,
                                             fontWeight: 400
                                         }}>{employee.birthday}</TableCell>
-                                        <TableCell
-                                            sx={{
-                                                color: "#232323",
-                                                fontSize: 16
-                                            }}>{dayjs().year() - dayjs(employee.birthday).year()}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16
+                                        }}>{dayjs().year() - dayjs(employee.birthday).year()}</TableCell>
                                         <TableCell sx={{
                                             color: "#232323",
                                             fontSize: 16,
@@ -237,17 +244,17 @@ const ManageEmployeeScreen = () => {
                                             fontWeight: 400
                                         }}>{employee.salary}</TableCell>
                                         <TableCell>
-                                            <IconButton sx={{color: "#FFBB38"}}
+                                            <IconButton sx={{ color: "#FFBB38" }}
                                                         onClick={() => handleViewOpen(employee)}>
-                                                <VisibilityIcon/>
+                                                <VisibilityIcon />
                                             </IconButton>
-                                            <IconButton sx={{color: "#16DBCC"}}
+                                            <IconButton sx={{ color: "#16DBCC" }}
                                                         onClick={() => handleEditOpen(employee)}>
-                                                <EditIcon/>
+                                                <EditIcon />
                                             </IconButton>
-                                            <IconButton sx={{color: "#FE5C73"}}
+                                            <IconButton sx={{ color: "#FE5C73" }}
                                                         onClick={() => handleDelete(employee.employeeId)}>
-                                                <DeleteIcon/>
+                                                <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -259,8 +266,10 @@ const ManageEmployeeScreen = () => {
             </Grid>
 
             <Dialog open={open} onClose={() => setOpen(false)} maxWidth="md" fullWidth>
-                <DialogTitle sx={{bgcolor: 'primary.main', color: 'white'}}>Add Employee</DialogTitle>
-                <DialogContent sx={{py: 3}}>
+                <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>
+                    {selectedEmployee ? "Edit Employee" : "Add Employee"}
+                </DialogTitle>
+                <DialogContent sx={{ py: 3 }}>
                     <form onSubmit={selectedEmployee ? handleUpdate : handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
@@ -271,7 +280,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.employeeId}
                                     onChange={handleInputChange}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                     disabled={!!selectedEmployee}
                                 />
                             </Grid>
@@ -283,7 +292,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.name}
                                     onChange={handleInputChange}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -294,7 +303,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.address}
                                     onChange={handleInputChange}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -303,7 +312,8 @@ const ManageEmployeeScreen = () => {
                                         label="Birthday"
                                         value={formData.birthday ? dayjs(formData.birthday) : null}
                                         onChange={handleDateChange}
-                                        // renderInput={(params) => <TextField {...params} fullWidth margin="dense"
+                                        // renderInput={(params) =>
+                                        //     <TextField {...params} fullWidth margin="dense"
                                         //                                     sx={{ mb: 2 }} />}
                                     />
                                 </LocalizationProvider>
@@ -316,7 +326,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -327,7 +337,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.mobile}
                                     onChange={handleInputChange}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -338,7 +348,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.position}
                                     onChange={handleInputChange}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -349,7 +359,7 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.department}
                                     onChange={handleInputChange}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
@@ -360,20 +370,20 @@ const ManageEmployeeScreen = () => {
                                     fullWidth
                                     value={formData.salary}
                                     onChange={handleInputChange}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 />
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <FormControl fullWidth margin="dense" sx={{mb: 2}}>
+                                <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
                                     <InputLabel>Gender</InputLabel>
                                     <Select
                                         name="gender"
                                         value={formData.gender}
                                         onChange={handleInputChange}
                                     >
-                                        <MenuItem value="male">Male</MenuItem>
-                                        <MenuItem value="female">Female</MenuItem>
-                                        <MenuItem value="other">Other</MenuItem>
+                                        <MenuItem value="Male">Male</MenuItem>
+                                        <MenuItem value="Female">Female</MenuItem>
+                                        <MenuItem value="Other">Other</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>
@@ -381,7 +391,7 @@ const ManageEmployeeScreen = () => {
                                 <Button
                                     variant="contained"
                                     component="label"
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 >
                                     Upload Photo
                                     <input
@@ -392,7 +402,7 @@ const ManageEmployeeScreen = () => {
                                 </Button>
                                 {formData.photo && (
                                     <img src={formData.photo} alt="Employee"
-                                         style={{maxWidth: '100px', maxHeight: '100px', display: 'block'}}/>
+                                         style={{ maxWidth: '100px', maxHeight: '100px', display: 'block' }} />
                                 )}
                             </Grid>
                         </Grid>
@@ -411,67 +421,67 @@ const ManageEmployeeScreen = () => {
             {selectedEmployee && (
                 <Dialog open={viewOpen} onClose={handleViewClose} maxWidth="md" fullWidth>
                     <DialogTitle
-                        sx={{color: '#333B69', textAlign: "center", fontWeight: 500, bgcolor: '#f5f5f5', pb: 2}}>
+                        sx={{ color: '#333B69', textAlign: "center", fontWeight: 500, bgcolor: '#f5f5f5', pb: 2 }}>
                         View Employee
                     </DialogTitle>
-                    <DialogContent sx={{py: 3, px: 4, bgcolor: '#fafafa'}}>
+                    <DialogContent sx={{ py: 3, px: 4, bgcolor: '#fafafa' }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={12}>
                                 {selectedEmployee.photo && (
-                                    <Box sx={{mt: 2, display: 'flex', justifyContent: 'center'}}>
+                                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}>
                                         {/*<Box sx={{ border: '1px solid #ddd', p: 1, borderRadius: 1, display: 'flex', justifyContent: 'center' }}>*/}
                                         <img src={selectedEmployee.photo} alt="Employee"
-                                             style={{maxWidth: '100px', maxHeight: '100px'}}/>
+                                             style={{ maxWidth: '100px', maxHeight: '100px' }} />
                                         {/*</Box>*/}
                                     </Box>
                                 )}
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Employee ID</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Employee ID</Typography>
                                 <Typography variant="body1"
-                                            sx={{color: '#555'}}>{selectedEmployee.employeeId}</Typography>
+                                            sx={{ color: '#555' }}>{selectedEmployee.employeeId}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Name</Typography>
-                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.name}</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Name</Typography>
+                                <Typography variant="body1" sx={{ color: '#555' }}>{selectedEmployee.name}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Address</Typography>
-                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.address}</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Address</Typography>
+                                <Typography variant="body1" sx={{ color: '#555' }}>{selectedEmployee.address}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Birthday</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Birthday</Typography>
                                 <Typography variant="body1"
-                                            sx={{color: '#555'}}>{selectedEmployee.birthday}</Typography>
+                                            sx={{ color: '#555' }}>{selectedEmployee.birthday}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Email</Typography>
-                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.email}</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Email</Typography>
+                                <Typography variant="body1" sx={{ color: '#555' }}>{selectedEmployee.email}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Mobile</Typography>
-                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.mobile}</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Mobile</Typography>
+                                <Typography variant="body1" sx={{ color: '#555' }}>{selectedEmployee.mobile}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Position</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Position</Typography>
                                 <Typography variant="body1"
-                                            sx={{color: '#555'}}>{selectedEmployee.position}</Typography>
+                                            sx={{ color: '#555' }}>{selectedEmployee.position}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Department</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Department</Typography>
                                 <Typography variant="body1"
-                                            sx={{color: '#555'}}>{selectedEmployee.department}</Typography>
+                                            sx={{ color: '#555' }}>{selectedEmployee.department}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Salary</Typography>
-                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.salary}</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Salary</Typography>
+                                <Typography variant="body1" sx={{ color: '#555' }}>{selectedEmployee.salary}</Typography>
                             </Grid>
                             <Grid item xs={12} md={6}>
-                                <Typography variant="h6" sx={{fontWeight: 500}}>Gender</Typography>
-                                <Typography variant="body1" sx={{color: '#555'}}>{selectedEmployee.gender}</Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 500 }}>Gender</Typography>
+                                <Typography variant="body1" sx={{ color: '#555' }}>{selectedEmployee.gender}</Typography>
                             </Grid>
                         </Grid>
-                        <DialogActions sx={{pt: 3}}>
+                        <DialogActions sx={{ pt: 3 }}>
                             <Button onClick={handleViewClose} color="secondary" variant="outlined">
                                 Close
                             </Button>

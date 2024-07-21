@@ -115,13 +115,20 @@ const ManageAttendanceScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={4} component={Paper} sx={{ mb: 2, borderRadius: 100}}>
-                {/*    Search bar  */}
+                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{ mb: 2, borderRadius: 100}}>
+                    {/*    Search bar  */}
                     <TextField
                         label={'Search Employee'}
                         variant="outlined"
                         fullWidth
                         sx={{borderRadius: 100}}
+                        InputProps={{
+                            sx: {
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                    border: 'none'
+                                }
+                            }
+                        }}
                     />
                 </Grid>
                 <Grid item xs={12} md={12}>

@@ -1,7 +1,5 @@
-import ManageEmployeeScreen from "../../screens/Employee/ManageEmployeeScreen";
 import React from "react";
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
-import {Box} from "@mui/material";
 import LoginScreen from "../../screens/Login/LoginScreen";
 import {MenuBar} from "../MenuBar/MenuBar";
 

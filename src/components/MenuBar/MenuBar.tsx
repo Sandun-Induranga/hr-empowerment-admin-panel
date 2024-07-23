@@ -8,11 +8,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import CssBaseline from '@mui/material/CssBaseline';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import HomeIcon from '@mui/icons-material/Home';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
+import TableChartIcon from '@mui/icons-material/TableChart';
+import CakeIcon from '@mui/icons-material/Cake';
+import PlaceIcon from '@mui/icons-material/Place';
+import DevicesIcon from '@mui/icons-material/Devices';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box, Avatar, IconButton, Toolbar as MuiToolbar } from "@mui/material";
@@ -66,7 +67,7 @@ export const MenuBar = () => {
             >
                 <Toolbar>
                     <Typography variant="h6" noWrap sx={{ color: "#343C6A", fontSize: 24 }}>
-                        HRES
+                        XPERT
                     </Typography>
                 </Toolbar>
                 <MuiToolbar />
@@ -75,46 +76,36 @@ export const MenuBar = () => {
                         {[
                             {
                                 text: 'Dashboard',
-                                icon: <DashboardIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
+                                icon: <HomeIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Dashboard'
                             },
                             {
                                 text: 'Manage Employees',
-                                icon: <AccountBalanceIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
+                                icon: <Diversity3Icon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Manage Employees'
                             },
                             {
                                 text: 'Attendance',
-                                icon: <AccountBalanceIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
+                                icon: <TableChartIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Attendance'
                             },
                             {
                                 text: 'Birthdays',
-                                icon: <AttachMoneyIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
+                                icon: <CakeIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Birthdays'
                             },
                             {
                                 text: 'Location Tracker',
-                                icon: <CreditCardIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
+                                icon: <PlaceIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Location Tracker'
                             },
                             {
                                 text: 'Projects',
-                                icon: <LocalAtmIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
+                                icon: <DevicesIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Projects'
                             },
                             {
-                                text: 'Services',
-                                icon: <SettingsIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
-                                screen: 'Services'
-                            },
-                            {
-                                text: 'My Privileges',
-                                icon: <SettingsIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
-                                screen: 'My Privileges'
-                            },
-                            {
-                                text: 'Setting',
+                                text: 'Settings',
                                 icon: <SettingsIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Setting'
                             }

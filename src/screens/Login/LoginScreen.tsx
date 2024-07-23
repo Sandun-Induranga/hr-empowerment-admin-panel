@@ -28,7 +28,7 @@ const LoginPage = () => {
     const handleSubmit = (event: any) => {
         event.preventDefault();
         // Replace with your login logic
-        if (email === 'user@example.com' && password === 'password') {
+        if (email === 'admin@gmail.com' && password === 'admin') {
             alert('Login successful');
             // react router dom
             navigate('/admin-panel');

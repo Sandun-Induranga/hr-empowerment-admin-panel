@@ -1,15 +1,18 @@
 import ManageEmployeeScreen from "../../screens/Employee/ManageEmployeeScreen";
 import React from "react";
-import {Route, Routes} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import {Box} from "@mui/material";
+import LoginScreen from "../../screens/Login/LoginScreen";
+import {MenuBar} from "../MenuBar/MenuBar";
 
 const RootRoutes = () => {
     return (
-        <Box sx={{display:'flex'}}>
+        <Router>
             <Routes>
-                <Route path="/manage-employee" element={<ManageEmployeeScreen/>}/>
+                <Route path="/" element={<LoginScreen/>}/>
+                <Route path="/admin-panel" element={<MenuBar/>}/>
             </Routes>
-        </Box>
+        </Router>
     );
 }
 

@@ -1,9 +1,8 @@
 import React from 'react';
-import {MenuBar} from "./components/MenuBar/MenuBar";
-import LoginScreen from "./screens/Login/LoginScreen";
+import RootRoutes from "./components/RootPage/RootRoutes";
 
 function App() {
-    return (<LoginScreen/>);
+    return (<RootRoutes/>);
 }
 
 export default App;

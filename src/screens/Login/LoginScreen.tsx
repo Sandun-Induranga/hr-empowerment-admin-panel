@@ -13,9 +13,8 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {useNavigate, useRoutes} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import loginImage from '../../assets/images/login.jpg';
-import {Work} from "@mui/icons-material";
 
 const theme = createTheme();
 
@@ -72,10 +71,10 @@ const LoginPage = () => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             maxWidth: '400px',
-                            m:'auto'
+                            m: 'auto'
                         }}
                     >
-                        <Avatar sx={{mt:100, m: 1, bgcolor: 'secondary.main'}}>
+                        <Avatar sx={{mt: 100, m: 1, bgcolor: 'secondary.main'}}>
                             <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">

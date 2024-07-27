@@ -6,7 +6,6 @@ import {
     TextField,
     FormControlLabel,
     Checkbox,
-    Link,
     Paper,
     Box,
     Grid,
@@ -46,6 +45,9 @@ const LoginPage = () => {
                 backgroundSize: 'contain',
                 backgroundPosition: 'center',
                 height: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
             }}>
                 <CssBaseline/>
                 <Grid
@@ -58,8 +60,6 @@ const LoginPage = () => {
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                        height: '100vh',
                     }}
                 />
                 <Grid item xs={12} sm={8} md={4} component={Paper} elevation={0} square>
@@ -67,7 +67,6 @@ const LoginPage = () => {
                         sx={{
                             my: 8,
                             mx: 4,
-                            height: 500,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -120,22 +119,10 @@ const LoginPage = () => {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{mt: 3, mb: 2}}
+                                sx={{mt: 3, mb: 20}}
                             >
                                 Sign In
                             </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link href="#" variant="body2">
-                                        {"Don't have an account? Sign Up"}
-                                    </Link>
-                                </Grid>
-                            </Grid>
                         </Box>
                     </Box>
                 </Grid>

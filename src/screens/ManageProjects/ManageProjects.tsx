@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
     Button,
     Grid,
-    Paper,
     Card,
     CardContent,
     CardActions,
@@ -26,6 +25,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useForm, Controller } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
+import projectImage from '../../assets/images/project.jpg';
 
 interface IEmployee {
     id: string;
@@ -106,13 +106,26 @@ const ManageProjectsScreen = () => {
         }
     };
 
+    const getStatusColor = (status: any) => {
+        switch (status) {
+            case 'Completed':
+                return 'green';
+            case 'In Progress':
+                return 'orange';
+            case 'Not Started':
+                return 'red';
+            default:
+                return 'black';
+        }
+    };
+
     return (
         <>
             <Grid container spacing={2} p={2}>
                 <Grid item xs={12}>
                     <Button
                         variant="contained"
-                        color="primary"
+                        sx={{backgroundColor:'#16DBCC', color:'white'}}
                         startIcon={<AddCircleIcon />}
                         onClick={handleOpen}
                     >
@@ -122,15 +135,20 @@ const ManageProjectsScreen = () => {
                 {projects.map((project) => (
                     <Grid item xs={12} sm={6} md={4} key={project.id}>
                         <Card>
-                            <CardContent>
-                                <Typography variant="h5">{project.name}</Typography>
-                                <Typography color="textSecondary">Status: {project.status}</Typography>
-                                <Typography color="textSecondary">
-                                    Employees: {project.employees.length}
-                                </Typography>
+                            <CardContent style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <div>
+                                    <Typography variant="h5" sx={{color:'#718EBF', mb:2}}>{project.name}</Typography>
+                                    <Typography color="textSecondary">
+                                        Status: <span style={{ color: getStatusColor(project.status) }}>{project.status}</span>
+                                    </Typography>
+                                    <Typography color="textSecondary">
+                                        Employees: {project.employees.length}
+                                    </Typography>
+                                </div>
+                                <img src={projectImage} alt="Project" style={{ width: 100 }} />
                             </CardContent>
                             <CardActions>
-                                <Button size="small" color="primary" onClick={() => handleManageOpen(project)}>
+                                <Button size="small" sx={{color:'#16DBCC'}} onClick={() => handleManageOpen(project)}>
                                     Manage
                                 </Button>
                             </CardActions>
@@ -173,10 +191,10 @@ const ManageProjectsScreen = () => {
                             )}
                         />
                         <DialogActions>
-                            <Button onClick={handleClose} color="secondary">
+                            <Button onClick={handleClose} sx={{background:'#FE5C73'}}>
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained" color="primary">
+                            <Button type="submit" variant="contained" sx={{background:'#16DBCC'}}>
                                 Create
                             </Button>
                         </DialogActions>
@@ -187,7 +205,7 @@ const ManageProjectsScreen = () => {
             {/* Manage Project Dialog */}
             {selectedProject && (
                 <Dialog open={manageOpen} onClose={handleManageClose} maxWidth="sm" fullWidth>
-                    <DialogTitle>Manage Project</DialogTitle>
+                    <DialogTitle sx={{color:'#718EBF'}}>Manage Project</DialogTitle>
                     <DialogContent>
                         <form onSubmit={handleSubmit(handleUpdate)}>
                             <Controller
@@ -248,10 +266,10 @@ const ManageProjectsScreen = () => {
                                 ))}
                             </Box>
                             <DialogActions>
-                                <Button onClick={handleManageClose} color="secondary">
+                                <Button onClick={handleManageClose} variant="contained" sx={{background:'#FE5C73'}}>
                                     Cancel
                                 </Button>
-                                <Button type="submit" variant="contained" color="primary">
+                                <Button type="submit" variant="contained" sx={{background:'#16DBCC'}}>
                                     Update
                                 </Button>
                             </DialogActions>

@@ -112,11 +112,12 @@ const ManageLeavesScreen = () => {
                         </Table>
                     </TableContainer>
                 </Grid>
-                <Grid item xs={12} md={3} elevation={0} component={Paper}
+                <Grid item xs={12} md={3}
                       sx={{background: `url(${leaveImage})`,
                           backgroundRepeat: 'no-repeat',
-                          backgroundSize: 'contain',
+                          backgroundSize: 'cover',
                           backgroundPosition: 'center',
+                          height: 500,
                       }}>
                 </Grid>
             </Grid>

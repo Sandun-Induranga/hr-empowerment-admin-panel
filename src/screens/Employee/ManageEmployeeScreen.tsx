@@ -158,13 +158,13 @@ const ManageEmployeeScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{ mb: 2, borderRadius: 0 }}>
+                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{ mb: 2, borderRadius: 100 }}>
                     {/* Search bar */}
                     <TextField
                         label={'Search Employee'}
                         variant="outlined"
                         fullWidth
-                        sx={{ borderRadius: 0 }}
+                        sx={{ borderRadius: 100 }}
                         InputProps={{
                             sx: {
                                 '& .MuiOutlinedInput-notchedOutline': {
@@ -175,7 +175,7 @@ const ManageEmployeeScreen = () => {
                     />
                 </Grid>
                 <Grid item xs={12} md={12} sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-                    <Button variant="contained" color="primary" onClick={handleClickOpen}>
+                    <Button variant="contained" sx={{background:'#16DBCC'}} onClick={handleClickOpen}>
                         Add Employee
                     </Button>
                 </Grid>

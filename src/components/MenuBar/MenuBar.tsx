@@ -69,7 +69,7 @@ export const MenuBar = () => {
             >
                 <Toolbar>
                     <Typography variant="h6" noWrap sx={{ color: "#343C6A", fontSize: 24 }}>
-                        XPERT
+                        HRES
                     </Typography>
                 </Toolbar>
                 <MuiToolbar />

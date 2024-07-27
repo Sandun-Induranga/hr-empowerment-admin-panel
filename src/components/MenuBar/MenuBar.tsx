@@ -23,6 +23,8 @@ import BirthdayReminderScreen from "../../screens/BirthdayReminder/BirthdayRemin
 import LocationTrackerScreen from "../../screens/LocationTracker/LocationTrackerScreen";
 import ManageProjectsScreen from "../../screens/ManageProjects/ManageProjects";
 import DashboardScreen from "../../screens/Dashboard/DashboardScreen";
+import {NoteAddTwoTone, TimeToLeave} from "@mui/icons-material";
+import ManageLeavesScreen from "../../screens/Leaves/LeavesScreen";
 
 const drawerWidth = 240;
 
@@ -90,6 +92,11 @@ export const MenuBar = () => {
                                 screen: 'Attendance'
                             },
                             {
+                                text: 'Leaves',
+                                icon: <NoteAddTwoTone sx={{ color: "#B1B1B1", fontSize: 18 }} />,
+                                screen: 'Leaves'
+                            },
+                            {
                                 text: 'Birthdays',
                                 icon: <CakeIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Birthdays'
@@ -131,6 +138,7 @@ export const MenuBar = () => {
                 {currentScreen === 'Dashboard' && <DashboardScreen />}
                 {currentScreen === 'Manage Employees' && <ManageEmployeeScreen />}
                 {currentScreen === 'Attendance' && <ManageAttendanceScreen />}
+                {currentScreen === 'Leaves' && <ManageLeavesScreen />}
                 {currentScreen === 'Birthdays' && <BirthdayReminderScreen />}
                 {currentScreen === 'Location Tracker' && <LocationTrackerScreen />}
                 {currentScreen === 'Projects' && <ManageProjectsScreen />}

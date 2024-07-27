@@ -5,7 +5,7 @@ import {
     Typography,
     Container,
     Grid,
-    Paper,
+    Paper, Box,
 } from '@mui/material';
 import {Bar} from 'react-chartjs-2';
 import {
@@ -89,27 +89,27 @@ const ManageProjectsDashboard = () => {
     };
 
     return (
-        <Container>
+        <Box>
             <Grid container spacing={3} p={3}>
-                <Grid item xs={12} sm={6} md={3} lg={4}>
+                <Grid item xs={12} sm={6} md={3}>
                     <Paper elevation={3} sx={{p: 3}}>
                         <Typography variant="h6">Total Employees</Typography>
                         <Typography variant="h4">{employees.length}</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} lg={4}>
+                <Grid item xs={12} sm={6} md={3}>
                     <Paper elevation={3} sx={{p: 3}}>
                         <Typography variant="h6">Total Projects</Typography>
                         <Typography variant="h4">{projects.length}</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} lg={4}>
+                <Grid item xs={12} sm={6} md={3}>
                     <Paper elevation={3} sx={{p: 3}}>
                         <Typography variant="h6">Leaves Today</Typography>
                         <Typography variant="h4">{todayLeaves}</Typography>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} lg={4}>
+                <Grid item xs={12} sm={6} md={3}>
                     <Paper elevation={3} sx={{p: 3}}>
                         <Typography variant="h6">Birthdays Today</Typography>
                         <Typography variant="h4">{todayBirthdays}</Typography>
@@ -117,7 +117,7 @@ const ManageProjectsDashboard = () => {
                 </Grid>
             </Grid>
 
-            <Grid container spacing={3} p={3}>
+            <Grid container spacing={3} p={3} sx={{mt:10}}>
                 <Grid item xs={12} md={6}>
                     <Paper elevation={3} sx={{p: 3}}>
                         <Typography variant="h6">Project Status Overview</Typography>
@@ -135,7 +135,7 @@ const ManageProjectsDashboard = () => {
                 }}>
                 </Grid>
             </Grid>
-        </Container>
+        </Box>
     );
 };
 

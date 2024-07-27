@@ -13,11 +13,12 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    Typography
+    Typography, IconButton
 } from "@mui/material";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import 'leaflet/dist/leaflet.css';
 import L from "leaflet";
+import {Close} from "@mui/icons-material";
 
 // Fix for default marker icon issue in leaflet with react-leaflet
 // delete L.Icon.Default.prototype._getIconUrl;
@@ -126,8 +127,11 @@ const EmployeeLocationTracker = () => {
                 </Grid>
             </Grid>
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-                <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>
+                <DialogTitle sx={{ bgcolor: '#16DBCC', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     Employee Location
+                    <IconButton onClick={handleClose} sx={{ color: 'white' }}>
+                        <Close />
+                    </IconButton>
                 </DialogTitle>
                 <DialogContent sx={{ py: 3 }}>
                     {selectedEmployee && (
@@ -135,6 +139,7 @@ const EmployeeLocationTracker = () => {
                             center={center}
                             zoom={13}
                             style={mapContainerStyle}
+                            preferCanvas={true}
                         >
                             <TileLayer
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

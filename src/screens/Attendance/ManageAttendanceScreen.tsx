@@ -25,6 +25,8 @@ import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, {Dayjs} from 'dayjs';
+import attendanceImage from "../../assets/images/attendance.jpg";
+import dashboardImage from "../../assets/images/dashboard.jpg";
 
 interface IEmployee {
     id: string;
@@ -115,8 +117,7 @@ const ManageAttendanceScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{ mb: 2, borderRadius: 100}}>
-                    {/*    Search bar  */}
+                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{mb: 2, borderRadius: 100}}>
                     <TextField
                         label={'Search Employee'}
                         variant="outlined"
@@ -131,7 +132,7 @@ const ManageAttendanceScreen = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} md={12}>
+                <Grid item xs={12} md={8} sx={{display: 'flex', justifyContent: 'center'}}>
                     <TableContainer component={Paper} elevation={0} sx={{borderRadius: 8}}>
                         <Table>
                             <TableHead>
@@ -197,6 +198,14 @@ const ManageAttendanceScreen = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                </Grid>
+                <Grid item xs={12} md={3} elevation={0} component={Paper}
+                      sx={{background: `url(${attendanceImage})`,
+                          backgroundRepeat: 'no-repeat',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                      }}>
+
                 </Grid>
             </Grid>
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>

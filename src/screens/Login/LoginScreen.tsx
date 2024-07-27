@@ -11,11 +11,12 @@ import {
     Box,
     Grid,
     Typography,
-    Container
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
 import {useNavigate, useRoutes} from "react-router-dom";
+import loginImage from '../../assets/images/login.jpg';
+import {Work} from "@mui/icons-material";
 
 const theme = createTheme();
 
@@ -39,33 +40,43 @@ const LoginPage = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{height: '100vh'}}>
+            <Grid container component="main" sx={{
+                background: `url(${loginImage})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center',
+                height: '100vh',
+            }}>
                 <CssBaseline/>
                 <Grid
                     item
                     xs={false}
                     sm={4}
-                    md={7}
+                    md={8}
                     sx={{
-                        backgroundImage: 'url(https://via.placeholder.com/800)',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundColor: (t) =>
-                            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                        height: '100vh',
                     }}
                 />
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                <Grid item xs={12} sm={8} md={4} component={Paper} elevation={0} square>
                     <Box
                         sx={{
                             my: 8,
                             mx: 4,
+                            height: 500,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
+                            justifyContent: 'center',
+                            maxWidth: '400px',
+                            m:'auto'
                         }}
                     >
-                        <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                        <Avatar sx={{mt:100, m: 1, bgcolor: 'secondary.main'}}>
                             <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">

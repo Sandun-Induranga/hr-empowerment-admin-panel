@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
     Button,
     Grid,
@@ -32,12 +33,14 @@ interface IEmployee {
     name: string;
 }
 
-interface IProject {
-    id: string;
-    name: string;
-    status: string;
-    employees: IEmployee[];
-}
+// interface any {
+//     id: string;
+//     name: string;
+//     description: string;
+//     status: string;
+//     employees: string[];
+//     created_at: Date;
+// }
 
 const sampleEmployees: IEmployee[] = [
     { id: 'E001', name: 'John Doe' },
@@ -47,11 +50,36 @@ const sampleEmployees: IEmployee[] = [
 ];
 
 const ManageProjectsScreen = () => {
-    const [projects, setProjects] = useState<IProject[]>([]);
-    const [selectedProject, setSelectedProject] = useState<IProject | null>(null);
+    const [projects, setProjects] = useState<any[]>([]);
+    const [selectedProject, setSelectedProject] = useState<any | null>(null);
     const [open, setOpen] = useState(false);
     const [manageOpen, setManageOpen] = useState(false);
-    const { control, handleSubmit, reset } = useForm<IProject>();
+    const { control, handleSubmit, reset } = useForm<any>();
+
+    // Fetch all projects
+    const fetchProjects = async () => {
+        try {
+            const response: any = await axios.get('http://localhost:5000/projects');
+            console.log('Projects:', response.data);
+            setProjects(response.data);
+        } catch (error) {
+            console.error('Error fetching projects:', error);
+        }
+    };
+
+    // Create a new project
+    const createProject = async (data: any) => {
+        try {
+            const response: any = await axios.post('http://localhost:5000/projects', data);
+            setProjects([...projects, response]);
+        } catch (error) {
+            console.error('Error creating project:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchProjects();
+    }, []);
 
     const handleOpen = () => {
         reset({ id: uuidv4(), name: '', status: '', employees: [] });
@@ -62,7 +90,7 @@ const ManageProjectsScreen = () => {
         setOpen(false);
     };
 
-    const handleManageOpen = (project: IProject) => {
+    const handleManageOpen = (project: any) => {
         setSelectedProject(project);
         setManageOpen(true);
     };
@@ -72,38 +100,34 @@ const ManageProjectsScreen = () => {
         setSelectedProject(null);
     };
 
-    const onSubmit = (data: IProject) => {
-        setProjects([...projects, data]);
+    const onSubmit = (data: any) => {
+        const newProject = { ...data, created_at: new Date(), users: [] };
+        createProject(newProject);
         setOpen(false);
     };
 
-    const handleUpdate = (data: IProject) => {
-        setProjects(
-            projects.map((project) =>
-                project.id === data.id ? { ...data } : project
-            )
-        );
-        setManageOpen(false);
+    const handleUpdate = (data: any) => {
+        // Implement update logic with API
     };
 
     const handleAddEmployee = (employee: IEmployee) => {
-        if (selectedProject) {
-            setSelectedProject({
-                ...selectedProject,
-                employees: [...selectedProject.employees, employee]
-            });
-        }
+        // if (selectedProject) {
+        //     setSelectedProject({
+        //         ...selectedProject,
+        //         employees: [...selectedProject.employees, employee]
+        //     });
+        // }
     };
 
     const handleRemoveEmployee = (employeeId: string) => {
-        if (selectedProject) {
-            setSelectedProject({
-                ...selectedProject,
-                employees: selectedProject.employees.filter(
-                    (employee) => employee.id !== employeeId
-                )
-            });
-        }
+        // if (selectedProject) {
+        //     setSelectedProject({
+        //         ...selectedProject,
+        //         employees: selectedProject.employees.filter(
+        //             (employee) => employee !== employeeId
+        //         )
+        //     });
+        // }
     };
 
     const getStatusColor = (status: any) => {
@@ -125,36 +149,36 @@ const ManageProjectsScreen = () => {
                 <Grid item xs={12}>
                     <Button
                         variant="contained"
-                        sx={{backgroundColor:'#16DBCC', color:'white'}}
+                        sx={{ backgroundColor: '#16DBCC', color: 'white' }}
                         startIcon={<AddCircleIcon />}
                         onClick={handleOpen}
                     >
                         Create Project
                     </Button>
                 </Grid>
-                {projects.map((project) => (
+                {(projects.map((project) => (
                     <Grid item xs={12} sm={6} md={4} key={project.id}>
                         <Card>
                             <CardContent style={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <div>
-                                    <Typography variant="h5" sx={{color:'#718EBF', mb:2}}>{project.name}</Typography>
+                                    <Typography variant="h5" sx={{ color: '#718EBF', mb: 2 }}>{project.name}</Typography>
                                     <Typography color="textSecondary">
                                         Status: <span style={{ color: getStatusColor(project.status) }}>{project.status}</span>
                                     </Typography>
                                     <Typography color="textSecondary">
-                                        Employees: {project.employees.length}
+                                        Employees: 0
                                     </Typography>
                                 </div>
                                 <img src={projectImage} alt="Project" style={{ width: 100 }} />
                             </CardContent>
                             <CardActions>
-                                <Button size="small" sx={{color:'#16DBCC'}} onClick={() => handleManageOpen(project)}>
+                                <Button size="small" sx={{ color: '#16DBCC' }} onClick={() => handleManageOpen(project)}>
                                     Manage
                                 </Button>
                             </CardActions>
                         </Card>
                     </Grid>
-                ))}
+                )))}
             </Grid>
 
             {/* Create Project Dialog */}
@@ -176,6 +200,19 @@ const ManageProjectsScreen = () => {
                             )}
                         />
                         <Controller
+                        name="description"
+                        control={control}
+                        defaultValue=""
+                        render={({ field }) => (
+                        <TextField
+                            {...field}
+                            label="Project Description"
+                            fullWidth
+                            margin="normal"
+                        />
+                    )}
+                        />
+                        <Controller
                             name="status"
                             control={control}
                             defaultValue=""
@@ -191,92 +228,16 @@ const ManageProjectsScreen = () => {
                             )}
                         />
                         <DialogActions>
-                            <Button onClick={handleClose} sx={{background:'#FE5C73'}}>
+                            <Button onClick={handleClose} sx={{ background: '#FE5C73' }}>
                                 Cancel
                             </Button>
-                            <Button type="submit" variant="contained" sx={{background:'#16DBCC'}}>
+                            <Button type="submit" variant="contained" sx={{ background: '#16DBCC' }}>
                                 Create
                             </Button>
                         </DialogActions>
                     </form>
                 </DialogContent>
             </Dialog>
-
-            {/* Manage Project Dialog */}
-            {selectedProject && (
-                <Dialog open={manageOpen} onClose={handleManageClose} maxWidth="sm" fullWidth>
-                    <DialogTitle sx={{color:'#718EBF'}}>Manage Project</DialogTitle>
-                    <DialogContent>
-                        <form onSubmit={handleSubmit(handleUpdate)}>
-                            <Controller
-                                name="name"
-                                control={control}
-                                defaultValue={selectedProject.name}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        label="Project Name"
-                                        fullWidth
-                                        margin="normal"
-                                    />
-                                )}
-                            />
-                            <Controller
-                                name="status"
-                                control={control}
-                                defaultValue={selectedProject.status}
-                                render={({ field }) => (
-                                    <FormControl fullWidth margin="normal">
-                                        <InputLabel>Status</InputLabel>
-                                        <Select {...field}>
-                                            <MenuItem value="Not Started">Not Started</MenuItem>
-                                            <MenuItem value="In Progress">In Progress</MenuItem>
-                                            <MenuItem value="Completed">Completed</MenuItem>
-                                        </Select>
-                                    </FormControl>
-                                )}
-                            />
-                            <Typography variant="h6" gutterBottom>
-                                Employees
-                            </Typography>
-                            <List>
-                                {selectedProject.employees.map((employee) => (
-                                    <ListItem key={employee.id} secondaryAction={
-                                        <IconButton edge="end" aria-label="delete" onClick={() => handleRemoveEmployee(employee.id)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    }>
-                                        <ListItemText primary={employee.name} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                            <Box my={2}>
-                                <Typography variant="h6">Add Employee</Typography>
-                                {sampleEmployees.map((employee) => (
-                                    <Button
-                                        key={employee.id}
-                                        variant="outlined"
-                                        size="small"
-                                        onClick={() => handleAddEmployee(employee)}
-                                        disabled={selectedProject.employees.some((e) => e.id === employee.id)}
-                                        sx={{ mr: 1, mb: 1 }}
-                                    >
-                                        {employee.name}
-                                    </Button>
-                                ))}
-                            </Box>
-                            <DialogActions>
-                                <Button onClick={handleManageClose} variant="contained" sx={{background:'#FE5C73'}}>
-                                    Cancel
-                                </Button>
-                                <Button type="submit" variant="contained" sx={{background:'#16DBCC'}}>
-                                    Update
-                                </Button>
-                            </DialogActions>
-                        </form>
-                    </DialogContent>
-                </Dialog>
-            )}
         </>
     );
 };

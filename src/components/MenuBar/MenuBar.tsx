@@ -118,8 +118,8 @@ export const MenuBar = () => {
                             }
                         ].map(({ text, icon, screen }) => (
                             <ListItem button key={text} onClick={() => handleMenuItemClick(screen)}>
-                                <ListItemIcon>{icon}</ListItemIcon>
-                                <ListItemText primary={text} />
+                                <ListItemIcon sx={currentScreen === screen ?  {color: '#343C6A', fontWeight: 'bold' } : { color: '#B1B1B1' }}>{icon}</ListItemIcon>
+                                <ListItemText sx={currentScreen === screen ?  {color: '#343C6A', fontWeight: 'bold' } : { color: '#B1B1B1' }} primary={text} />
                             </ListItem>
                         ))}
                     </List>

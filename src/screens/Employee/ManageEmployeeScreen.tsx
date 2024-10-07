@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
     Button,
     Grid,
@@ -32,49 +32,22 @@ import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { IEmployees } from "../../core/interfaces/IEmployees";
 
-const sampleEmployees: IEmployees[] = [
-    {
-        employeeId: "1",
-        name: "John Doe",
-        address: "Manila",
-        birthday: "2000-01-01",
-        email: "john@example.com",
-        mobile: "09123456789",
-        position: "Engineer",
-        department: "Engineering",
-        salary: 50000,
-        gender: "Male",
-        photo: "https://via.placeholder.com/150"
-    },
-    {
-        employeeId: "2",
-        name: "Jane Smith",
-        address: "Cebu",
-        birthday: "1992-02-02",
-        email: "jane@example.com",
-        mobile: "09123456780",
-        position: "Manager",
-        department: "Management",
-        salary: 60000,
-        gender: "Female",
-        photo: "https://via.placeholder.com/150"
-    }
-];
-
 const ManageEmployeeScreen = () => {
-    const [employees, setEmployees] = useState<IEmployees[]>(sampleEmployees);
+    const [employees, setEmployees] = useState<IEmployees[]>([]);
     const [formData, setFormData] = useState<IEmployees>({
         employeeId: '',
         name: '',
         address: '',
         birthday: '',
         email: '',
+        password: '',
         mobile: '',
         position: '',
         department: '',
         salary: 0,
         gender: '',
-        photo: ''
+        photo: '',
+        role: 'EMPLOYEE',
     });
 
     const [open, setOpen] = useState(false);
@@ -83,7 +56,7 @@ const ManageEmployeeScreen = () => {
 
     const handleInputChange = (e: any) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        setFormData({ ...formData, [name]: name == 'salary'? parseFloat(value): value });
     };
 
     const handleDateChange = (date: Dayjs | null) => {
@@ -101,12 +74,36 @@ const ManageEmployeeScreen = () => {
         }
     };
 
+    const fetchEmployees = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/employees');
+            setEmployees(response.data);
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchEmployees();
+    }, []);
+
+
+    // const handleSubmit = async (e: any) => {
+    //     e.preventDefault();
+    //     try {
+    //         const response = await axios.post('http://localhost:5000/employees', formData);
+    //         console.log('Form submitted successfully:', response.data);
+    //         setEmployees([...employees, formData]);
+    //         setOpen(false);
+    //     } catch (error) {
+    //         console.error('Error submitting the form:', error);
+    //     }
+    // };
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/employees', formData);
-            console.log('Form submitted successfully:', response.data);
-            setEmployees([...employees, formData]);
+            setEmployees([...employees, response.data]); // Assuming backend returns the created employee
             setOpen(false);
         } catch (error) {
             console.error('Error submitting the form:', error);
@@ -120,12 +117,14 @@ const ManageEmployeeScreen = () => {
             address: '',
             birthday: '',
             email: '',
+            password: '',
             mobile: '',
             position: '',
             department: '',
             salary: 0,
             gender: '',
-            photo: ''
+            photo: '',
+            role: 'EMPLOYEE'
         });
         setOpen(true);
     };
@@ -145,14 +144,35 @@ const ManageEmployeeScreen = () => {
         setOpen(true);
     };
 
-    const handleDelete = (employeeId: string) => {
-        setEmployees(employees.filter(employee => employee.employeeId !== employeeId));
+    // const handleDelete = (employeeId: string) => {
+    //     setEmployees(employees.filter(employee => employee.employeeId !== employeeId));
+    // };
+
+    const handleDelete = async (employeeId: string) => {
+        try {
+            await axios.delete(`http://localhost:5000/employees/${employeeId}`);
+            setEmployees(employees.filter(employee => employee.employeeId !== employeeId));
+        } catch (error) {
+            console.error('Error deleting employee:', error);
+        }
     };
 
-    const handleUpdate = (e: any) => {
+
+    // const handleUpdate = (e: any) => {
+    //     e.preventDefault();
+    //     setEmployees(employees.map(employee => employee.employeeId === formData.employeeId ? formData : employee));
+    //     setOpen(false);
+    // };
+
+    const handleUpdate = async (e: any) => {
         e.preventDefault();
-        setEmployees(employees.map(employee => employee.employeeId === formData.employeeId ? formData : employee));
-        setOpen(false);
+        try {
+            const response = await axios.patch(`http://localhost:5000/employees/${formData.employeeId}`, formData);
+            setEmployees(employees.map(employee => employee.employeeId === formData.employeeId ? response.data : employee));
+            setOpen(false);
+        } catch (error) {
+            console.error('Error updating employee:', error);
+        }
     };
 
     return (
@@ -325,6 +345,17 @@ const ManageEmployeeScreen = () => {
                                     margin="dense"
                                     fullWidth
                                     value={formData.email}
+                                    onChange={handleInputChange}
+                                    sx={{ mb: 2 }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={6}>
+                                <TextField
+                                    label="Password"
+                                    name="password"
+                                    margin="dense"
+                                    fullWidth
+                                    value={formData.password}
                                     onChange={handleInputChange}
                                     sx={{ mb: 2 }}
                                 />

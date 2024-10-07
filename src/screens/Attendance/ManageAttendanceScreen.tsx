@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     Button,
     Grid,
@@ -21,50 +21,57 @@ import {
     TextField,
     Box
 } from "@mui/material";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import {LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, {Dayjs} from 'dayjs';
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from 'dayjs';
+import axios from 'axios';
 import attendanceImage from "../../assets/images/attendance.jpg";
-import dashboardImage from "../../assets/images/dashboard.jpg";
 
 interface IEmployee {
-    id: string;
+    _id: string;
     name: string;
 }
 
 interface IAttendance {
-    employeeId: string;
+    user_id: string;
     date: string;
     status: string;
 }
 
-const sampleEmployees: IEmployee[] = [
-    {id: 'E001', name: 'John Doe'},
-    {id: 'E002', name: 'Jane Smith'},
-    {id: 'E003', name: 'Alice Johnson'},
-    {id: 'E004', name: 'Bob Brown'},
-];
-
-const sampleAttendanceData: IAttendance[] = [
-    {employeeId: 'E001', date: '2024-06-01', status: 'Present'},
-    {employeeId: 'E002', date: '2024-06-01', status: 'Absent'},
-    {employeeId: 'E003', date: '2024-06-01', status: 'Leave'},
-    {employeeId: 'E004', date: '2024-06-01', status: 'Present'},
-    {employeeId: 'E001', date: '2024-06-02', status: 'Present'},
-    {employeeId: 'E002', date: '2024-06-02', status: 'Present'},
-    {employeeId: 'E003', date: '2024-06-02', status: 'Absent'},
-    {employeeId: 'E004', date: '2024-06-02', status: 'Leave'},
-];
-
 const ManageAttendanceScreen = () => {
-    const [employees, setEmployees] = useState<IEmployee[]>(sampleEmployees);
+    const [employees, setEmployees] = useState<IEmployee[]>([]);
     const [selectedEmployee, setSelectedEmployee] = useState<IEmployee | null>(null);
-    const [attendanceData, setAttendanceData] = useState<IAttendance[]>(sampleAttendanceData);
+    const [attendanceData, setAttendanceData] = useState<IAttendance[]>([]);
     const [date, setDate] = useState<Dayjs>(dayjs());
     const [status, setStatus] = useState<string>('');
     const [open, setOpen] = useState(false);
     const [historyOpen, setHistoryOpen] = useState(false);
+
+    // Fetch employees from the API (GET)
+    const fetchEmployees = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/employees');
+            setEmployees(response.data);
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    };
+
+    // Fetch attendance data from the API (GET)
+    const fetchAttendanceData = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/attendance');
+            setAttendanceData(response.data);
+        } catch (error) {
+            console.error('Error fetching attendance data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchEmployees();
+        fetchAttendanceData();
+    }, []);
 
     const handleOpen = (employee: IEmployee) => {
         setSelectedEmployee(employee);
@@ -88,16 +95,22 @@ const ManageAttendanceScreen = () => {
         setSelectedEmployee(null);
     };
 
-    const handleSubmit = () => {
+    // Submit new attendance (POST)
+    const handleSubmit = async () => {
         if (selectedEmployee) {
             const attendanceRecord: IAttendance = {
-                employeeId: selectedEmployee.id,
+                user_id: selectedEmployee._id,
                 date: date.toISOString().split('T')[0],
                 status
             };
 
-            setAttendanceData([...attendanceData, attendanceRecord]);
-            setOpen(false);
+            try {
+                await axios.post('http://localhost:5000/attendance', attendanceRecord);
+                setAttendanceData([...attendanceData, attendanceRecord]);
+                setOpen(false);
+            } catch (error) {
+                console.error('Error submitting attendance record:', error);
+            }
         }
     };
 
@@ -117,12 +130,12 @@ const ManageAttendanceScreen = () => {
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{mb: 2, borderRadius: 100}}>
+                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{ mb: 2, borderRadius: 100 }}>
                     <TextField
                         label={'Search Employee'}
                         variant="outlined"
                         fullWidth
-                        sx={{borderRadius: 100}}
+                        sx={{ borderRadius: 100 }}
                         InputProps={{
                             sx: {
                                 '& .MuiOutlinedInput-notchedOutline': {
@@ -132,26 +145,25 @@ const ManageAttendanceScreen = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} md={8} sx={{display: 'flex', justifyContent: 'center'}}>
-                    <TableContainer component={Paper} elevation={0} sx={{borderRadius: 8}}>
+                <Grid item xs={12} md={8} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TableContainer component={Paper} elevation={0} sx={{ borderRadius: 8 }}>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Employee
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Employee
                                         ID</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Name</TableCell>
-                                    <TableCell
-                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Actions</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Name</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {employees.map((employee) => (
-                                    <TableRow key={employee.id}>
+                                    <TableRow key={employee._id}>
                                         <TableCell sx={{
                                             color: "#232323",
                                             fontSize: 16,
                                             fontWeight: 400
-                                        }}>{employee.id}</TableCell>
+                                        }}>{employee._id}</TableCell>
                                         <TableCell sx={{
                                             color: "#232323",
                                             fontSize: 16,
@@ -200,7 +212,8 @@ const ManageAttendanceScreen = () => {
                     </TableContainer>
                 </Grid>
                 <Grid item xs={12} md={3} elevation={0} component={Paper}
-                      sx={{background: `url(${attendanceImage})`,
+                      sx={{
+                          background: `url(${attendanceImage})`,
                           backgroundRepeat: 'no-repeat',
                           backgroundSize: 'cover',
                           backgroundPosition: 'center',
@@ -208,23 +221,25 @@ const ManageAttendanceScreen = () => {
 
                 </Grid>
             </Grid>
+
+            {/* Mark Attendance Dialog */}
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-                <DialogTitle sx={{bgcolor: 'primary.main', color: 'white'}}>
+                <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>
                     Mark Attendance
                 </DialogTitle>
-                <DialogContent sx={{py: 3}}>
+                <DialogContent sx={{ py: 3 }}>
                     <form>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
                                     label="Employee ID"
-                                    value={selectedEmployee?.id || ''}
+                                    value={selectedEmployee?._id || ''}
                                     margin="dense"
                                     fullWidth
                                     InputProps={{
                                         readOnly: true,
                                     }}
-                                    sx={{mb: 2}}
+                                    sx={{ mb: 2 }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -233,12 +248,11 @@ const ManageAttendanceScreen = () => {
                                         label="Date"
                                         value={date}
                                         onChange={(newDate) => setDate(newDate || dayjs())}
-                                        // renderInput={(params: TextFieldProps) => <TextField {...params} fullWidth margin="dense" sx={{ mb: 2 }} />}
                                     />
                                 </LocalizationProvider>
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControl fullWidth margin="dense" sx={{mb: 2}}>
+                                <FormControl fullWidth margin="dense" sx={{ mb: 2 }}>
                                     <InputLabel>Status</InputLabel>
                                     <Select
                                         value={status}
@@ -262,14 +276,16 @@ const ManageAttendanceScreen = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+
+            {/* Attendance History Dialog */}
             <Dialog open={historyOpen} onClose={handleHistoryClose} maxWidth="md" fullWidth>
-                <DialogTitle sx={{bgcolor: 'primary.main', color: 'white'}}>
+                <DialogTitle sx={{ bgcolor: 'primary.main', color: 'white' }}>
                     Attendance History for {selectedEmployee?.name}
                 </DialogTitle>
-                <DialogContent sx={{py: 3}}>
-                    <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 1}}>
+                <DialogContent sx={{ py: 3 }}>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                         {attendanceData
-                            .filter(record => record.employeeId === selectedEmployee?.id)
+                            .filter(record => record.user_id === selectedEmployee?._id)
                             .map((record, index) => (
                                 <Box
                                     key={index}

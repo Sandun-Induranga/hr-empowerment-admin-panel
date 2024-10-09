@@ -1,58 +1,63 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
     Grid,
     Paper,
     Card,
     CardContent,
     Typography,
-    Box
 } from "@mui/material";
-import dayjs, {Dayjs} from 'dayjs';
+import dayjs from 'dayjs';
+import axios from 'axios'; // Axios for API calls
 import birthdayImage from "../../assets/images/birthday.jpg";
 
 interface IEmployee {
-    id: string;
+    _id: string;
     name: string;
     birthday: string;
 }
-
-const sampleEmployees: IEmployee[] = [
-    {id: 'E001', name: 'John Doe', birthday: '1990-06-20'},
-    {id: 'E002', name: 'Jane Smith', birthday: '1985-06-22'},
-    {id: 'E003', name: 'Alice Johnson', birthday: '1992-06-25'},
-    {id: 'E004', name: 'Bob Brown', birthday: '1988-06-29'},
-    {id: 'E005', name: 'Charlie Black', birthday: '1990-06-30'},
-    {id: 'E006', name: 'Diana White', birthday: '1982-07-01'}
-];
 
 const BirthdayReminderScreen = () => {
     const [todayBirthdays, setTodayBirthdays] = useState<IEmployee[]>([]);
     const [upcomingBirthdays, setUpcomingBirthdays] = useState<IEmployee[]>([]);
 
+    // Fetch employee data from the API
+    const fetchEmployees = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/employees'); // Adjust the URL as per your API
+            const employees: IEmployee[] = response.data;
+
+            const today = dayjs();
+            const nextWeek = today.add(7, 'day');
+
+            // Filter today's birthdays
+            const todaysBirthdays = employees.filter(employee => {
+                const birthday = dayjs(employee.birthday);
+                return birthday.month() === today.month() && birthday.date() === today.date();
+            });
+
+            // Filter upcoming week's birthdays
+            const upcomingWeekBirthdays = employees.filter(employee => {
+                const birthday = dayjs(employee.birthday).year(today.year());
+                return birthday.isAfter(today) && birthday.isBefore(nextWeek);
+            });
+
+            setTodayBirthdays(todaysBirthdays);
+            setUpcomingBirthdays(upcomingWeekBirthdays);
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    };
+
     useEffect(() => {
-        const today = dayjs();
-        const nextWeek = today.add(7, 'day');
-
-        const todaysBirthdays = sampleEmployees.filter(employee => {
-            const birthday = dayjs(employee.birthday);
-            return birthday.month() === today.month() && birthday.date() === today.date();
-        });
-
-        const upcomingWeekBirthdays = sampleEmployees.filter(employee => {
-            const birthday = dayjs(employee.birthday).year(today.year());
-            return birthday.isAfter(today) && birthday.isBefore(nextWeek);
-        });
-
-        setTodayBirthdays(todaysBirthdays);
-        setUpcomingBirthdays(upcomingWeekBirthdays);
+        fetchEmployees();
     }, []);
 
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={6} component={Paper} sx={{minHeight: 200, p: 4}}>
+                <Grid item xs={12} md={6} component={Paper} sx={{ minHeight: 200, p: 4 }}>
                     <Typography variant="h6" color="secondary"
-                                sx={{mb: 2, color: '#718EBF', fontSize: 24, fontWeight: 400}}>
+                                sx={{ mb: 2, color: '#718EBF', fontSize: 24, fontWeight: 400 }}>
                         Today's Birthdays
                     </Typography>
                     {todayBirthdays.length === 0 ? (
@@ -65,7 +70,7 @@ const BirthdayReminderScreen = () => {
                         </Typography>
                     ) : (
                         todayBirthdays.map((employee) => (
-                            <Card key={employee.id} sx={{mb: 2}}>
+                            <Card key={employee._id} sx={{ mb: 2 }}>
                                 <CardContent>
                                     <Typography variant="h6">{employee.name}</Typography>
                                     <Typography color="textSecondary">
@@ -76,9 +81,9 @@ const BirthdayReminderScreen = () => {
                         ))
                     )}
                 </Grid>
-                <Grid item xs={12} md={6} component={Paper} sx={{minHeight: 200, p: 4}}>
+                <Grid item xs={12} md={6} component={Paper} sx={{ minHeight: 200, p: 4 }}>
                     <Typography variant="h6" color="secondary"
-                                sx={{mb: 2, color: '#718EBF', fontSize: 24, fontWeight: 400}}>
+                                sx={{ mb: 2, color: '#718EBF', fontSize: 24, fontWeight: 400 }}>
                         Upcoming Week's Birthdays
                     </Typography>
                     {upcomingBirthdays.length === 0 ? (
@@ -91,7 +96,7 @@ const BirthdayReminderScreen = () => {
                         </Typography>
                     ) : (
                         upcomingBirthdays.map((employee) => (
-                            <Card key={employee.id} sx={{mb: 2}}>
+                            <Card key={employee._id} sx={{ mb: 2 }}>
                                 <CardContent>
                                     <Typography variant="h6">{employee.name}</Typography>
                                     <Typography color="textSecondary">

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import {
     Button,
     Grid,
@@ -11,6 +11,7 @@ import {
     TableRow,
     TextField,
 } from "@mui/material";
+import axios from "axios";
 import leaveImage from "../../assets/images/leave.jpg";
 
 interface IEmployee {
@@ -18,26 +19,72 @@ interface IEmployee {
     name: string;
 }
 
-
-const sampleEmployees: IEmployee[] = [
-    {id: 'E001', name: 'John Doe'},
-    {id: 'E002', name: 'Jane Smith'},
-    {id: 'E003', name: 'Alice Johnson'},
-    {id: 'E004', name: 'Bob Brown'},
-];
+interface ILeave {
+    id: string;
+    employeeId: string;
+    startDate: string;
+    endDate: string;
+    status: string;
+}
 
 const ManageLeavesScreen = () => {
-    const [employees, setEmployees] = useState<IEmployee[]>(sampleEmployees);
+    const [employees, setEmployees] = useState<IEmployee[]>([]);
+    const [leaves, setLeaves] = useState<ILeave[]>([]);
+
+    // Fetch employees from the backend
+    const fetchEmployees = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/employees');
+            setEmployees(response.data);
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    };
+
+    // Fetch leaves from the backend
+    const fetchLeaves = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/leaves');
+            setLeaves(response.data);
+        } catch (error) {
+            console.error('Error fetching leaves:', error);
+        }
+    };
+
+    // Accept leave (PATCH request)
+    const handleAcceptLeave = async (leaveId: string) => {
+        try {
+            await axios.patch(`http://localhost:5000/leaves/${leaveId}`, { status: 'Approved' });
+            fetchLeaves(); // Refetch leaves after update
+        } catch (error) {
+            console.error('Error accepting leave:', error);
+        }
+    };
+
+    // Reject leave (PATCH request)
+    const handleRejectLeave = async (leaveId: string) => {
+        try {
+            await axios.patch(`http://localhost:5000/leaves/${leaveId}`, { status: 'Rejected' });
+            fetchLeaves(); // Refetch leaves after update
+        } catch (error) {
+            console.error('Error rejecting leave:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchEmployees();
+        fetchLeaves();
+    }, []);
 
     return (
         <>
             <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{mb: 2, borderRadius: 100}}>
+                <Grid item xs={12} md={4} elevation={0} component={Paper} sx={{ mb: 2, borderRadius: 100 }}>
                     <TextField
                         label={'Search Employee'}
                         variant="outlined"
                         fullWidth
-                        sx={{borderRadius: 100}}
+                        sx={{ borderRadius: 100 }}
                         InputProps={{
                             sx: {
                                 '& .MuiOutlinedInput-notchedOutline': {
@@ -47,16 +94,14 @@ const ManageLeavesScreen = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12} md={8} sx={{display: 'flex', justifyContent: 'center'}}>
-                    <TableContainer component={Paper} elevation={0} sx={{borderRadius: 8}}>
+                <Grid item xs={12} md={8} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <TableContainer component={Paper} elevation={0} sx={{ borderRadius: 8 }}>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Employee
-                                        ID</TableCell>
-                                    <TableCell sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Name</TableCell>
-                                    <TableCell
-                                        sx={{color: '#718EBF', fontSize: 16, fontWeight: 400}}>Actions</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Employee ID</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Name</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -85,6 +130,7 @@ const ManageLeavesScreen = () => {
                                                     borderColor: "#16DBCC",
                                                     boxShadow: 0
                                                 }}
+                                                onClick={() => handleAcceptLeave(employee.id)}
                                             >
                                                 Accept Leave
                                             </Button>
@@ -102,6 +148,7 @@ const ManageLeavesScreen = () => {
                                                     boxShadow: 0,
                                                     ml: 2
                                                 }}
+                                                onClick={() => handleRejectLeave(employee.id)}
                                             >
                                                 Reject Leave
                                             </Button>
@@ -113,7 +160,8 @@ const ManageLeavesScreen = () => {
                     </TableContainer>
                 </Grid>
                 <Grid item xs={12} md={3}
-                      sx={{background: `url(${leaveImage})`,
+                      sx={{
+                          background: `url(${leaveImage})`,
                           backgroundRepeat: 'no-repeat',
                           backgroundSize: 'cover',
                           backgroundPosition: 'center',

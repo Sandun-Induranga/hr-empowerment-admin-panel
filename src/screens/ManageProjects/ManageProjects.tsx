@@ -1,29 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-    Button,
-    Grid,
-    Card,
-    CardContent,
-    CardActions,
-    Typography,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    TextField,
-    Select,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    List,
-    ListItem,
-    ListItemText,
-    IconButton,
-    Box
+    Button, Grid, Card, CardContent, CardActions, Typography, Dialog, DialogActions,
+    DialogContent, DialogTitle, TextField, Select, MenuItem, FormControl, InputLabel,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { useForm, Controller } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import projectImage from '../../assets/images/project.jpg';
@@ -33,56 +14,74 @@ interface IEmployee {
     name: string;
 }
 
-// interface any {
-//     id: string;
-//     name: string;
-//     description: string;
-//     status: string;
-//     employees: string[];
-//     created_at: Date;
-// }
-
-const sampleEmployees: IEmployee[] = [
-    { id: 'E001', name: 'John Doe' },
-    { id: 'E002', name: 'Jane Smith' },
-    { id: 'E003', name: 'Alice Johnson' },
-    { id: 'E004', name: 'Bob Brown' }
-];
-
 const ManageProjectsScreen = () => {
     const [projects, setProjects] = useState<any[]>([]);
     const [selectedProject, setSelectedProject] = useState<any | null>(null);
     const [open, setOpen] = useState(false);
     const [manageOpen, setManageOpen] = useState(false);
     const { control, handleSubmit, reset } = useForm<any>();
+    const [employees, setEmployees] = useState<any[]>([]);
+    const [assignedEmployees, setAssignedEmployees] = useState<IEmployee[]>([]);
 
     // Fetch all projects
     const fetchProjects = async () => {
         try {
-            const response: any = await axios.get('http://localhost:5000/projects');
-            console.log('Projects:', response.data);
+            const response = await axios.get('http://localhost:5000/projects');
             setProjects(response.data);
         } catch (error) {
             console.error('Error fetching projects:', error);
         }
     };
 
+    // Fetch all employees from backend
+    const fetchEmployees = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/users');
+            if (response.ok) {
+                const data = await response.json();
+                setEmployees(data);
+            } else {
+                console.error("Failed to fetch employees");
+            }
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    };
+
+    // Fetch employees assigned to a project
+    const fetchAssignedEmployees = async (userIds: string[]) => {
+        const assigned = employees.filter(employee => userIds.includes(employee.id));
+        setAssignedEmployees(assigned);
+    };
+
     // Create a new project
     const createProject = async (data: any) => {
         try {
-            const response: any = await axios.post('http://localhost:5000/projects', data);
-            setProjects([...projects, response]);
+            const response = await axios.post('http://localhost:5000/projects', data);
+            setProjects([...projects, response.data]);
         } catch (error) {
             console.error('Error creating project:', error);
         }
     };
 
+    // Update an existing project
+    const handleUpdate = async (updatedProject: any) => {
+        try {
+            const response = await axios.patch(`http://localhost:5000/projects/${updatedProject._id}`, updatedProject);
+            setProjects(projects.map(project => project.id === updatedProject.id ? response.data : project));
+            setManageOpen(false);
+        } catch (error) {
+            console.error('Error updating project:', error);
+        }
+    };
+
     useEffect(() => {
         fetchProjects();
+        fetchEmployees();
     }, []);
 
     const handleOpen = () => {
-        reset({ id: uuidv4(), name: '', status: '', employees: [] });
+        reset({ id: uuidv4(), name: '', status: '', users: [] });
         setOpen(true);
     };
 
@@ -92,42 +91,20 @@ const ManageProjectsScreen = () => {
 
     const handleManageOpen = (project: any) => {
         setSelectedProject(project);
+        fetchAssignedEmployees(project.users);  // Load assigned employees by user IDs
         setManageOpen(true);
     };
 
     const handleManageClose = () => {
         setManageOpen(false);
         setSelectedProject(null);
+        setAssignedEmployees([]);
     };
 
     const onSubmit = (data: any) => {
-        const newProject = { ...data, created_at: new Date(), users: [] };
+        const newProject = { ...data, created_at: new Date() };
         createProject(newProject);
         setOpen(false);
-    };
-
-    const handleUpdate = (data: any) => {
-        // Implement update logic with API
-    };
-
-    const handleAddEmployee = (employee: IEmployee) => {
-        // if (selectedProject) {
-        //     setSelectedProject({
-        //         ...selectedProject,
-        //         employees: [...selectedProject.employees, employee]
-        //     });
-        // }
-    };
-
-    const handleRemoveEmployee = (employeeId: string) => {
-        // if (selectedProject) {
-        //     setSelectedProject({
-        //         ...selectedProject,
-        //         employees: selectedProject.employees.filter(
-        //             (employee) => employee !== employeeId
-        //         )
-        //     });
-        // }
     };
 
     const getStatusColor = (status: any) => {
@@ -156,7 +133,7 @@ const ManageProjectsScreen = () => {
                         Create Project
                     </Button>
                 </Grid>
-                {(projects.map((project) => (
+                {projects.map((project) => (
                     <Grid item xs={12} sm={6} md={4} key={project.id}>
                         <Card>
                             <CardContent style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -166,7 +143,7 @@ const ManageProjectsScreen = () => {
                                         Status: <span style={{ color: getStatusColor(project.status) }}>{project.status}</span>
                                     </Typography>
                                     <Typography color="textSecondary">
-                                        Employees: 0
+                                        Employees: {project.users.length}
                                     </Typography>
                                 </div>
                                 <img src={projectImage} alt="Project" style={{ width: 100 }} />
@@ -178,7 +155,7 @@ const ManageProjectsScreen = () => {
                             </CardActions>
                         </Card>
                     </Grid>
-                )))}
+                ))}
             </Grid>
 
             {/* Create Project Dialog */}
@@ -200,17 +177,17 @@ const ManageProjectsScreen = () => {
                             )}
                         />
                         <Controller
-                        name="description"
-                        control={control}
-                        defaultValue=""
-                        render={({ field }) => (
-                        <TextField
-                            {...field}
-                            label="Project Description"
-                            fullWidth
-                            margin="normal"
-                        />
-                    )}
+                            name="description"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    label="Project Description"
+                                    fullWidth
+                                    margin="normal"
+                                />
+                            )}
                         />
                         <Controller
                             name="status"
@@ -227,6 +204,33 @@ const ManageProjectsScreen = () => {
                                 </FormControl>
                             )}
                         />
+                        <Controller
+                            name="users"
+                            control={control}
+                            defaultValue={[]}
+                            render={({ field }) => (
+                                <FormControl fullWidth margin="normal">
+                                    <InputLabel>Assign Employees</InputLabel>
+                                    <Select
+                                        {...field}
+                                        multiple
+                                        value={field.value || []}
+                                        renderValue={(selected) =>
+                                            (selected as string[]).map((id) => {
+                                                const employee = employees.find(emp => emp.id === id);
+                                                return employee ? employee.name : '';
+                                            }).join(', ')
+                                        }
+                                    >
+                                        {employees.map((employee) => (
+                                            <MenuItem key={employee.id} value={employee.id}>
+                                                {employee.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            )}
+                        />
                         <DialogActions>
                             <Button onClick={handleClose} sx={{ background: '#FE5C73' }}>
                                 Cancel
@@ -238,8 +242,53 @@ const ManageProjectsScreen = () => {
                     </form>
                 </DialogContent>
             </Dialog>
+
+            {/* Manage Project Dialog */}
+            <Dialog open={manageOpen} onClose={handleManageClose} maxWidth="sm" fullWidth>
+                <DialogTitle>Manage Project</DialogTitle>
+                <DialogContent>
+                    {selectedProject && (
+                        <>
+                            <Typography variant="h6">{selectedProject.name}</Typography>
+                            <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                                {selectedProject.description}
+                            </Typography>
+                            <FormControl fullWidth margin="normal">
+                                <InputLabel>Assign Employees</InputLabel>
+                                <Select
+                                    multiple
+                                    value={selectedProject.users}
+                                    onChange={(e) => {
+                                        const newEmployees = e.target.value as string[];
+                                        setSelectedProject({ ...selectedProject, users: newEmployees });
+                                    }}
+                                    renderValue={(selected) => (selected as string[]).map((id) => {
+                                        const employee = employees.find(emp => emp._id === id);
+                                        return employee ? employee.employee.name : '';
+                                    }).join(', ')}
+                                >
+                                    {employees.map((employee) => (
+                                        <MenuItem key={employee._id} value={employee._id}>
+                                            {employee.employee.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleManageClose} sx={{ background: '#FE5C73' }}>
+                        Cancel
+                    </Button>
+                    <Button onClick={() => handleUpdate(selectedProject)} variant="contained" sx={{ background: '#16DBCC' }}>
+                        Save Changes
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 };
 
 export default ManageProjectsScreen;
+

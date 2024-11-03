@@ -23,16 +23,29 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-
-    const handleSubmit = (event: any) => {
+    
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
-        // Replace with your login logic
-        if (email === 'admin@gmail.com' && password === 'admin') {
-            alert('Login successful');
-            // react router dom
-            navigate('/admin-panel');
-        } else {
-            setError('Invalid email or password');
+        
+        try {
+            const response = await fetch('http://localhost:5000/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('token', data.access_token);  // Store the token
+                alert('Login successful');
+                navigate('/admin-panel');  // Redirect to admin panel
+            } else {
+                setError('Invalid email or password');
+            }
+        } catch (error) {
+            setError('An error occurred. Please try again later.');
         }
     };
 

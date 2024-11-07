@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -23,21 +23,23 @@ import BirthdayReminderScreen from "../../screens/BirthdayReminder/BirthdayRemin
 import LocationTrackerScreen from "../../screens/LocationTracker/LocationTrackerScreen";
 import ManageProjectsScreen from "../../screens/ManageProjects/ManageProjects";
 import DashboardScreen from "../../screens/Dashboard/DashboardScreen";
-import {NoteAddTwoTone, TimeToLeave} from "@mui/icons-material";
+import {NoteAddTwoTone} from "@mui/icons-material";
 import ManageLeavesScreen from "../../screens/Leaves/LeavesScreen";
+import {useNavigate} from "react-router-dom";
 
 const drawerWidth = 240;
 
 export const MenuBar = () => {
     const [currentScreen, setCurrentScreen] = useState('Dashboard');
+    const navigate = useNavigate();
 
     const handleMenuItemClick = (screen: string) => {
         setCurrentScreen(screen);
     };
 
     const handleLogout = () => {
-        // Implement logout logic here
-        console.log('Logout clicked');
+        localStorage.removeItem('token');
+        navigate('/');
     };
 
     return (
@@ -50,9 +52,9 @@ export const MenuBar = () => {
                     </Typography>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                         <Typography variant="body1" sx={{ color: "#343C6A", fontSize: 16, marginRight: 2 }}>
-                            John Doe
+                            Admin
                         </Typography>
-                        <Avatar alt="John Doe" src="https://via.placeholder.com/150" sx={{ marginRight: 2 }} />
+                        <Avatar alt="Admin" src="https://png.pngtree.com/png-vector/20220807/ourmid/pngtree-man-avatar-wearing-gray-suit-png-image_6102786.png" sx={{ marginRight: 2 }} />
                         <IconButton onClick={handleLogout} color="inherit">
                             <LogoutIcon sx={{ color: "#343C6A" }} />
                         </IconButton>

@@ -68,7 +68,7 @@ const ManageProjectsScreen = () => {
     const handleUpdate = async (updatedProject: any) => {
         try {
             const response = await axios.patch(`http://localhost:5000/projects/${updatedProject._id}`, updatedProject);
-            setProjects(projects.map(project => project.id === updatedProject.id ? response.data : project));
+            fetchProjects();
             setManageOpen(false);
         } catch (error) {
             console.error('Error updating project:', error);

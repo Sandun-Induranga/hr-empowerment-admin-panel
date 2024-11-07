@@ -167,162 +167,249 @@
 
 import React, { useState, useEffect } from "react";
 import {
-    Button, Grid, Paper, Table, TableBody, TableCell, TableContainer,
-    TableHead, TableRow, Dialog, DialogActions, DialogContent,
-    DialogTitle, Typography, IconButton
+  Button,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
+  IconButton,
 } from "@mui/material";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import 'leaflet/dist/leaflet.css';
+import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Close } from "@mui/icons-material";
 
 // Fix for default marker icon issue in leaflet with react-leaflet
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
 interface IEmployee {
-    _id: string;
-    name: string;
-    latitude: number;
-    longitude: number;
+  _id: string;
+  name: string;
+  latitude: number;
+  longitude: number;
 }
 
 const EmployeeLocationTracker = () => {
-    const [employees, setEmployees] = useState<any[]>([]);
-    const [selectedEmployee, setSelectedEmployee] = useState<any | null>(null);
-    const [open, setOpen] = useState(false);
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [selectedEmployee, setSelectedEmployee] = useState<any | null>(null);
+  const [open, setOpen] = useState(false);
 
-    // Fetch employee location data from API
-    useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                const response = await fetch('http://localhost:5000/users'); // Adjust the URL to your backend endpoint
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log(data);
-                    setEmployees(data);
-                } else {
-                    console.error("Failed to fetch employees");
-                }
-            } catch (error) {
-                console.error("Error fetching employees", error);
-            }
-        };
-
-        fetchEmployees();
-    }, []);
-
-    const handleOpen = (employee: IEmployee) => {
-        console.log(employee);
-        setSelectedEmployee(employee);
-        setOpen(true);
+  // Fetch employee location data from API
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/users"); // Adjust the URL to your backend endpoint
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setEmployees(data);
+        } else {
+          console.error("Failed to fetch employees");
+        }
+      } catch (error) {
+        console.error("Error fetching employees", error);
+      }
     };
 
-    const handleClose = () => {
-        setOpen(false);
-        setSelectedEmployee(null);
-    };
+    fetchEmployees();
+  }, []);
 
-    const mapContainerStyle = {
-        width: '100%',
-        height: '400px'
-    };
+  const handleOpen = (employee: IEmployee) => {
+    console.log(employee);
+    setSelectedEmployee(employee);
+    setOpen(true);
+  };
 
-    const center = {
-        lat: selectedEmployee?.latitude || 0,
-        lng: selectedEmployee?.longitude || 0
-    };
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedEmployee(null);
+  };
 
-    return (
-        <>
-            <Grid container gap={2} p={2}>
-                <Grid item xs={12} md={12} component={Paper} sx={{ p: 3, mb: 2, borderRadius: 2 }}>
-                    <Typography variant="h5" textAlign="center" color="primary">
-                        Employee Location Tracker
-                    </Typography>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <TableContainer component={Paper} elevation={0} sx={{ borderRadius: 8 }}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Employee ID</TableCell>
-                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Name</TableCell>
-                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Actions</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {employees.map(employee => (
-                                    <TableRow key={employee._id}>
-                                        <TableCell sx={{ color: "#232323", fontSize: 16, fontWeight: 400 }}>
-                                            {employee._id}
-                                        </TableCell>
-                                        <TableCell sx={{ color: "#232323", fontSize: 16, fontWeight: 400 }}>
-                                            {employee.employee.name}
-                                        </TableCell>
-                                        <TableCell>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                sx={{
-                                                    background: "white",
-                                                    color: "#16DBCC",
-                                                    fontSize: 16,
-                                                    fontWeight: 400,
-                                                    borderRadius: 100,
-                                                    border: 1,
-                                                    borderColor: "#16DBCC",
-                                                    boxShadow: 0,
-                                                    ml: 2
-                                                }}
-                                                onClick={() => handleOpen(employee)}
-                                            >
-                                                View Location
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Grid>
-            </Grid>
+  const mapContainerStyle = {
+    width: "100%",
+    height: "400px",
+  };
 
-            <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-                <DialogTitle sx={{ bgcolor: '#16DBCC', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    Employee Location
-                    <IconButton onClick={handleClose} sx={{ color: 'white' }}>
-                        <Close />
-                    </IconButton>
-                </DialogTitle>
-                <DialogContent sx={{ py: 3 }}>
-                    {selectedEmployee && (
-                        <MapContainer center={center} zoom={13} style={mapContainerStyle}>
-                            <TileLayer
-                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                            />
-                            <Marker position={center}>
-                                <Popup>
-                                    {selectedEmployee.employee.name}'s Location<br />
-                                    Latitude: {selectedEmployee.latitude}<br />
-                                    Longitude: {selectedEmployee.longitude}
-                                </Popup>
-                            </Marker>
-                        </MapContainer>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="secondary">
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </>
-    );
+  const center = {
+    lat: selectedEmployee?.latitude || 0,
+    lng: selectedEmployee?.longitude || 0,
+  };
+
+  return (
+    <>
+      <Grid container gap={2} p={2}>
+        <Grid
+          item
+          xs={12}
+          md={12}
+          component={Paper}
+          sx={{ p: 3, mb: 2, borderRadius: 2 }}
+        >
+          <Typography variant="h5" textAlign="center" color="primary">
+            Employee Location Tracker
+          </Typography>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <TableContainer
+            component={Paper}
+            elevation={0}
+            sx={{ borderRadius: 8 }}
+          >
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
+                  >
+                    Employee ID
+                  </TableCell>
+                  <TableCell
+                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
+                  >
+                    Name
+                  </TableCell>
+                  <TableCell
+                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
+                  >
+                    Status
+                  </TableCell>
+                  <TableCell
+                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
+                  >
+                    Address
+                  </TableCell>
+                  <TableCell
+                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
+                  >
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {employees.map((employee) => (
+                  <TableRow key={employee._id}>
+                    <TableCell
+                      sx={{ color: "#232323", fontSize: 16, fontWeight: 400 }}
+                    >
+                      {employee._id}
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "#232323", fontSize: 16, fontWeight: 400 }}
+                    >
+                      {employee.employee.name}
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontWeight: 600,
+                          textTransform: "capitalize",
+                          textAlign: "center",
+                          fontSize: 14,
+                          color: "white",
+                          backgroundColor:
+                            employee.employee.status == "true"
+                              ? "#06d6a0"
+                              : "#ef476f",
+                          borderRadius: 10,
+                        }}
+                      >
+                        {employee.employee.status == "true"
+                          ? "Online"
+                          : "Offline"}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      sx={{ color: "#232323", fontSize: 16, fontWeight: 400 }}
+                    >
+                      {employee.employee.address}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                          background: "white",
+                          color: "#16DBCC",
+                          fontSize: 16,
+                          fontWeight: 400,
+                          borderRadius: 100,
+                          border: 1,
+                          borderColor: "#16DBCC",
+                          boxShadow: 0,
+                          ml: 2,
+                        }}
+                        onClick={() => handleOpen(employee)}
+                      >
+                        View Location
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Grid>
+      </Grid>
+
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
+        <DialogTitle
+          sx={{
+            bgcolor: "#16DBCC",
+            color: "white",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          Employee Location
+          <IconButton onClick={handleClose} sx={{ color: "white" }}>
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ py: 3 }}>
+          {selectedEmployee && (
+            <MapContainer center={center} zoom={13} style={mapContainerStyle}>
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              />
+              <Marker position={center}>
+                <Popup>
+                  {selectedEmployee.employee.name}'s Location
+                  <br />
+                  Latitude: {selectedEmployee.latitude}
+                  <br />
+                  Longitude: {selectedEmployee.longitude}
+                </Popup>
+              </Marker>
+            </MapContainer>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="secondary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
 };
 
 export default EmployeeLocationTracker;

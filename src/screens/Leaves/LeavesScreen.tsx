@@ -29,7 +29,7 @@ interface ILeave {
 
 const ManageLeavesScreen = () => {
     const [employees, setEmployees] = useState<IEmployee[]>([]);
-    const [leaves, setLeaves] = useState<ILeave[]>([]);
+    const [leaves, setLeaves] = useState<any[]>([]);
 
     // Fetch employees from the backend
     const fetchEmployees = async () => {
@@ -99,24 +99,42 @@ const ManageLeavesScreen = () => {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Employee ID</TableCell>
-                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Name</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Employee Name</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Reason</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Date</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Day Count</TableCell>
+                                    <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Status</TableCell>
                                     <TableCell sx={{ color: '#718EBF', fontSize: 16, fontWeight: 400 }}>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {employees.map((employee) => (
-                                    <TableRow key={employee.id}>
+                                {leaves.map((leave) => (
+                                    <TableRow key={leave._id}>
                                         <TableCell sx={{
                                             color: "#232323",
                                             fontSize: 16,
                                             fontWeight: 400
-                                        }}>{employee.id}</TableCell>
+                                        }}>{(employees.find(_id => leave.user_id))?.name }</TableCell>
                                         <TableCell sx={{
                                             color: "#232323",
                                             fontSize: 16,
                                             fontWeight: 400
-                                        }}>{employee.name}</TableCell>
+                                        }}>{leave.reason}</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{leave.date.split('T')[0] }</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{leave.day_count }</TableCell>
+                                        <TableCell sx={{
+                                            color: "#232323",
+                                            fontSize: 16,
+                                            fontWeight: 400
+                                        }}>{leave.status }</TableCell>
                                         <TableCell>
                                             <Button
                                                 variant="outlined"
@@ -130,7 +148,7 @@ const ManageLeavesScreen = () => {
                                                     borderColor: "#16DBCC",
                                                     boxShadow: 0
                                                 }}
-                                                onClick={() => handleAcceptLeave(employee.id)}
+                                                onClick={() => handleAcceptLeave(leave._id)}
                                             >
                                                 Accept Leave
                                             </Button>
@@ -148,7 +166,7 @@ const ManageLeavesScreen = () => {
                                                     boxShadow: 0,
                                                     ml: 2
                                                 }}
-                                                onClick={() => handleRejectLeave(employee.id)}
+                                                onClick={() => handleRejectLeave(leave._id)}
                                             >
                                                 Reject Leave
                                             </Button>

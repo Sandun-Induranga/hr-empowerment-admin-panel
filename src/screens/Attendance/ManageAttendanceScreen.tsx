@@ -20,6 +20,7 @@ import {
   Typography,
   TextField,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -27,6 +28,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
 import attendanceImage from "../../assets/images/attendance.jpg";
+import { toast } from "react-toastify";
 
 interface IEmployee {
   _id: string;
@@ -47,24 +49,33 @@ const ManageAttendanceScreen = () => {
   const [status, setStatus] = useState<string>("");
   const [open, setOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Fetch employees from the API (GET)
   const fetchEmployees = async () => {
+    const toastId = toast.loading("Loading Employee Data..!", { autoClose: 15000 });
     try {
       const response = await axios.get("http://localhost:5000/users");
       setEmployees(response.data);
+      toast.dismiss(toastId);
     } catch (error) {
+      toast.dismiss(toastId);
       console.error("Error fetching employees:", error);
+      toast.error("Something Went Wrong..!");
     }
   };
 
   // Fetch attendance data from the API (GET)
   const fetchAttendanceData = async () => {
+    const toastId = toast.loading("Loading Attendance Data..!", { autoClose: 15000 });
     try {
       const response = await axios.get("http://localhost:5000/attendance");
+      toast.dismiss(toastId);
       setAttendanceData(response.data);
     } catch (error) {
+      toast.dismiss(toastId);
       console.error("Error fetching attendance data:", error);
+      toast.error("Something Went Wrong..!");
     }
   };
 
@@ -103,13 +114,17 @@ const ManageAttendanceScreen = () => {
         date: date.toISOString().split("T")[0],
         status,
       };
-
+      const toastId = toast.loading("Submitting..!", { autoClose: 15000 });
       try {
         await axios.post("http://localhost:5000/attendance", attendanceRecord);
         setAttendanceData([...attendanceData, attendanceRecord]);
         setOpen(false);
+        toast.dismiss(toastId);
+        toast.success("Data Added Successfully..!");
       } catch (error) {
+        toast.dismiss(toastId);
         console.error("Error submitting attendance record:", error);
+        toast.error("Something Went Wrong..!");
       }
     }
   };
@@ -158,119 +173,123 @@ const ManageAttendanceScreen = () => {
           md={8}
           sx={{ display: "flex", justifyContent: "center" }}
         >
-          <TableContainer
-            component={Paper}
-            elevation={0}
-            sx={{ borderRadius: 8 }}
-          >
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
-                  >
-                    Employee ID
-                  </TableCell>
-                  <TableCell
-                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
-                  >
-                    Name
-                  </TableCell>
-                  <TableCell
-                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
-                  >
-                    Status
-                  </TableCell>
-                  <TableCell
-                    sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
-                  >
-                    Actions
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {employees.map((employee) => (
-                  <TableRow key={employee._id}>
+          {loading ? (
+            <CircularProgress sx={{ color: "#718EBF", mt: 30 }} />
+          ) : (
+            <TableContainer
+              component={Paper}
+              elevation={0}
+              sx={{ borderRadius: 8 }}
+            >
+              <Table>
+                <TableHead>
+                  <TableRow>
                     <TableCell
-                      sx={{
-                        color: "#232323",
-                        fontSize: 16,
-                        fontWeight: 400,
-                      }}
+                      sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
                     >
-                      {employee._id}
+                      Employee ID
                     </TableCell>
                     <TableCell
-                      sx={{
-                        color: "#232323",
-                        fontSize: 16,
-                        fontWeight: 400,
-                      }}
+                      sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
                     >
-                      {employee.employee.name}
+                      Name
                     </TableCell>
-                    <TableCell>
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          fontWeight: 600,
-                          textTransform: "capitalize",
-                          textAlign: "center",
-                          fontSize: 14,
-                          color: "white",
-                          backgroundColor:
-                            employee.employee.status == "true"
-                              ? "#06d6a0"
-                              : "#ef476f",
-                          borderRadius: 10,
-                        }}
-                      >
-                        {employee.employee.status == "true"
-                          ? "Online"
-                          : "Offline"}
-                      </Typography>
+                    <TableCell
+                      sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
+                    >
+                      Status
                     </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outlined"
-                        sx={{
-                          background: "white",
-                          color: "#1814F3",
-                          fontSize: 16,
-                          fontWeight: 400,
-                          borderRadius: 100,
-                          border: 1,
-                          borderColor: "#1814F3",
-                          boxShadow: 0,
-                        }}
-                        onClick={() => handleOpen(employee)}
-                      >
-                        Mark Attendance
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => handleHistoryOpen(employee)}
-                        sx={{
-                          background: "white",
-                          color: "#16DBCC",
-                          fontSize: 16,
-                          fontWeight: 400,
-                          borderRadius: 100,
-                          border: 1,
-                          borderColor: "#16DBCC",
-                          boxShadow: 0,
-                          ml: 2,
-                        }}
-                      >
-                        View History
-                      </Button>
+                    <TableCell
+                      sx={{ color: "#718EBF", fontSize: 16, fontWeight: 400 }}
+                    >
+                      Actions
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {employees.map((employee) => (
+                    <TableRow key={employee._id}>
+                      <TableCell
+                        sx={{
+                          color: "#232323",
+                          fontSize: 16,
+                          fontWeight: 400,
+                        }}
+                      >
+                        {employee._id}
+                      </TableCell>
+                      <TableCell
+                        sx={{
+                          color: "#232323",
+                          fontSize: 16,
+                          fontWeight: 400,
+                        }}
+                      >
+                        {employee.employee.name}
+                      </TableCell>
+                      <TableCell>
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            fontWeight: 600,
+                            textTransform: "capitalize",
+                            textAlign: "center",
+                            fontSize: 14,
+                            color: "white",
+                            backgroundColor:
+                              employee.employee.status == "true"
+                                ? "#06d6a0"
+                                : "#ef476f",
+                            borderRadius: 10,
+                          }}
+                        >
+                          {employee.employee.status == "true"
+                            ? "Online"
+                            : "Offline"}
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outlined"
+                          sx={{
+                            background: "white",
+                            color: "#1814F3",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            borderRadius: 100,
+                            border: 1,
+                            borderColor: "#1814F3",
+                            boxShadow: 0,
+                          }}
+                          onClick={() => handleOpen(employee)}
+                        >
+                          Mark Attendance
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={() => handleHistoryOpen(employee)}
+                          sx={{
+                            background: "white",
+                            color: "#16DBCC",
+                            fontSize: 16,
+                            fontWeight: 400,
+                            borderRadius: 100,
+                            border: 1,
+                            borderColor: "#16DBCC",
+                            boxShadow: 0,
+                            ml: 2,
+                          }}
+                        >
+                          View History
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </Grid>
         <Grid
           item

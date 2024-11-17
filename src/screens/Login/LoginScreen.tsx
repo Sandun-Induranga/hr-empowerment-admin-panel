@@ -39,6 +39,7 @@ const LoginPage = () => {
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('token', data.access_token);  // Store the token
+                localStorage.setItem('role', data.role);
                 alert('Login successful');
                 navigate('/admin-panel');  // Redirect to admin panel
             } else {

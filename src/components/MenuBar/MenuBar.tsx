@@ -23,9 +23,10 @@ import BirthdayReminderScreen from "../../screens/BirthdayReminder/BirthdayRemin
 import LocationTrackerScreen from "../../screens/LocationTracker/LocationTrackerScreen";
 import ManageProjectsScreen from "../../screens/ManageProjects/ManageProjects";
 import DashboardScreen from "../../screens/Dashboard/DashboardScreen";
-import {NoteAddTwoTone} from "@mui/icons-material";
+import {Feedback, NoteAddTwoTone} from "@mui/icons-material";
 import ManageLeavesScreen from "../../screens/Leaves/LeavesScreen";
 import {useNavigate} from "react-router-dom";
+import FeedbackScreen from '../../screens/Feedback/FeedbackScreen';
 
 const drawerWidth = 240;
 
@@ -108,15 +109,15 @@ export const MenuBar = () => {
                                 icon: <PlaceIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Location Tracker'
                             },
-                            {
+                            ...(localStorage.getItem('role') === 'Head' ? [{
                                 text: 'Projects',
                                 icon: <DevicesIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
                                 screen: 'Projects'
-                            },
+                            }] : []),
                             {
-                                text: 'Settings',
-                                icon: <SettingsIcon sx={{ color: "#B1B1B1", fontSize: 18 }} />,
-                                screen: 'Setting'
+                                text: 'Feedback',
+                                icon: <Feedback sx={{ color: "#B1B1B1", fontSize: 18 }} />,
+                                screen: 'Feedback'
                             }
                         ].map(({ text, icon, screen }) => (
                             <ListItem button key={text} onClick={() => handleMenuItemClick(screen)}>
@@ -144,6 +145,7 @@ export const MenuBar = () => {
                 {currentScreen === 'Birthdays' && <BirthdayReminderScreen />}
                 {currentScreen === 'Location Tracker' && <LocationTrackerScreen />}
                 {currentScreen === 'Projects' && <ManageProjectsScreen />}
+                {currentScreen === 'Feedback' && <FeedbackScreen />}
             </Box>
         </Box>
     );

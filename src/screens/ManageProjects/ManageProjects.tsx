@@ -244,48 +244,66 @@ const ManageProjectsScreen = () => {
             </Dialog>
 
             {/* Manage Project Dialog */}
-            <Dialog open={manageOpen} onClose={handleManageClose} maxWidth="sm" fullWidth>
-                <DialogTitle>Manage Project</DialogTitle>
-                <DialogContent>
-                    {selectedProject && (
-                        <>
-                            <Typography variant="h6">{selectedProject.name}</Typography>
-                            <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-                                {selectedProject.description}
-                            </Typography>
-                            <FormControl fullWidth margin="normal">
-                                <InputLabel>Assign Employees</InputLabel>
-                                <Select
-                                    multiple
-                                    value={selectedProject.users}
-                                    onChange={(e) => {
-                                        const newEmployees = e.target.value as string[];
-                                        setSelectedProject({ ...selectedProject, users: newEmployees });
-                                    }}
-                                    renderValue={(selected) => (selected as string[]).map((id) => {
-                                        const employee = employees.find(emp => emp._id === id);
-                                        return employee ? employee.employee.name : '';
-                                    }).join(', ')}
-                                >
-                                    {employees.map((employee) => (
-                                        <MenuItem key={employee._id} value={employee._id}>
-                                            {employee.employee.name}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </>
-                    )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleManageClose} sx={{ background: '#FE5C73' }}>
-                        Cancel
-                    </Button>
-                    <Button onClick={() => handleUpdate(selectedProject)} variant="contained" sx={{ background: '#16DBCC' }}>
-                        Save Changes
-                    </Button>
-                </DialogActions>
-            </Dialog>
+<Dialog open={manageOpen} onClose={handleManageClose} maxWidth="sm" fullWidth>
+    <DialogTitle>Manage Project</DialogTitle>
+    <DialogContent>
+        {selectedProject && (
+            <>
+                <Typography variant="h6">{selectedProject.name}</Typography>
+                <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+                    {selectedProject.description}
+                </Typography>
+
+                {/* Project Status */}
+                <FormControl fullWidth margin="normal">
+                    <InputLabel>Status</InputLabel>
+                    <Select
+                        value={selectedProject.status || ''}
+                        onChange={(e) => {
+                            setSelectedProject({ ...selectedProject, status: e.target.value });
+                        }}
+                    >
+                        <MenuItem value="Not Started">Not Started</MenuItem>
+                        <MenuItem value="In Progress">In Progress</MenuItem>
+                        <MenuItem value="Completed">Completed</MenuItem>
+                    </Select>
+                </FormControl>
+
+                {/* Assign Employees */}
+                <FormControl fullWidth margin="normal">
+                    <InputLabel>Assign Employees</InputLabel>
+                    <Select
+                        multiple
+                        value={selectedProject.users || []}
+                        onChange={(e) => {
+                            const newEmployees = e.target.value as string[];
+                            setSelectedProject({ ...selectedProject, users: newEmployees });
+                        }}
+                        renderValue={(selected) => (selected as string[]).map((id) => {
+                            const employee = employees.find(emp => emp._id === id);
+                            return employee ? employee.employee.name : '';
+                        }).join(', ')}
+                    >
+                        {employees.map((employee) => (
+                            <MenuItem key={employee._id} value={employee._id}>
+                                {employee.employee.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </>
+        )}
+    </DialogContent>
+    <DialogActions>
+        <Button onClick={handleManageClose} sx={{ background: '#FE5C73' }}>
+            Cancel
+        </Button>
+        <Button onClick={() => handleUpdate(selectedProject)} variant="contained" sx={{ background: '#16DBCC' }}>
+            Save Changes
+        </Button>
+    </DialogActions>
+</Dialog>
+
         </>
     );
 };

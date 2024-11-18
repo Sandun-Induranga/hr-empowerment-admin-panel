@@ -131,7 +131,7 @@ const ManageEmployeeScreen = () => {
         ...formData,
         email: formData.employee.email,
       });
-      setEmployees([...employees, response.data]); // Assuming backend returns the created user
+      setEmployees([...employees, response.data]);
       setOpen(false);
       toast.dismiss(toastId);
       toast.success("Employee Added Successfully..!");

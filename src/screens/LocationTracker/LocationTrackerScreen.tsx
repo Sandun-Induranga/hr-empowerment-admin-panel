@@ -187,6 +187,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Close } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 // Fix for default marker icon issue in leaflet with react-leaflet
 L.Icon.Default.mergeOptions({
@@ -213,17 +214,20 @@ const EmployeeLocationTracker = () => {
   // Fetch employee location data from API
   useEffect(() => {
     const fetchEmployees = async () => {
+      const toastId = toast.loading("Loading Employee Data..!", { autoClose: 15000 });
       try {
         const response = await fetch("http://localhost:5000/users"); // Adjust the URL to your backend endpoint
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
           setEmployees(data);
         } else {
           console.error("Failed to fetch employees");
         }
+        toast.dismiss(toastId);
       } catch (error) {
         console.error("Error fetching employees", error);
+        toast.dismiss(toastId);
+        toast.error("Error fetching employees!");
       }
     };
 

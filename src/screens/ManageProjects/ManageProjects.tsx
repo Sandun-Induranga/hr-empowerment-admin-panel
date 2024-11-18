@@ -8,6 +8,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useForm, Controller } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
 import projectImage from '../../assets/images/project.jpg';
+import { toast } from 'react-toastify';
 
 interface IEmployee {
     id: string;
@@ -25,16 +26,20 @@ const ManageProjectsScreen = () => {
 
     // Fetch all projects
     const fetchProjects = async () => {
+        const toastId = toast.loading("Loading Projects Data..!", { autoClose: 15000 });
         try {
             const response = await axios.get('http://localhost:5000/projects');
             setProjects(response.data);
+            toast.dismiss(toastId);
         } catch (error) {
+            toast.dismiss(toastId);
             console.error('Error fetching projects:', error);
         }
     };
 
     // Fetch all employees from backend
     const fetchEmployees = async () => {
+        const toastId = toast.loading("Loading Employee Data..!", { autoClose: 15000 });
         try {
             const response = await fetch('http://localhost:5000/users');
             if (response.ok) {
@@ -43,8 +48,10 @@ const ManageProjectsScreen = () => {
             } else {
                 console.error("Failed to fetch employees");
             }
+            toast.dismiss(toastId);
         } catch (error) {
             console.error('Error fetching employees:', error);
+            toast.dismiss(toastId);
         }
     };
 
@@ -56,22 +63,32 @@ const ManageProjectsScreen = () => {
 
     // Create a new project
     const createProject = async (data: any) => {
+        const toastId = toast.loading("Submitting..!", { autoClose: 15000 });
         try {
             const response = await axios.post('http://localhost:5000/projects', data);
+            toast.dismiss(toastId);
             setProjects([...projects, response.data]);
+            toast.success("Successfully Created..!");
         } catch (error) {
+            toast.dismiss(toastId);
             console.error('Error creating project:', error);
+            toast.error("Something Went Wrong..!");
         }
     };
 
     // Update an existing project
     const handleUpdate = async (updatedProject: any) => {
+        const toastId = toast.loading("Submitting..!", { autoClose: 15000 });
         try {
             const response = await axios.patch(`http://localhost:5000/projects/${updatedProject._id}`, updatedProject);
             fetchProjects();
+            toast.dismiss(toastId);
             setManageOpen(false);
+            toast.success("Successfully Updated..!");
         } catch (error) {
+            toast.dismiss(toastId);
             console.error('Error updating project:', error);
+            toast.error("Something Went Wrong..!");
         }
     };
 

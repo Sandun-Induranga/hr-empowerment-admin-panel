@@ -16,21 +16,8 @@ import axios from "axios";
 import leaveImage from "../../assets/images/leave.jpg";
 import { toast } from "react-toastify";
 
-interface IEmployee {
-  id: string;
-  name: string;
-}
-
-interface ILeave {
-  id: string;
-  employeeId: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-}
-
 const ManageLeavesScreen = () => {
-  const [employees, setEmployees] = useState<IEmployee[]>([]);
+  const [employees, setEmployees] = useState<any[]>([]);
   const [leaves, setLeaves] = useState<any[]>([]);
   const [acceptStatus, setAcceptStatus] = useState<boolean>(true);
   const [rejectStatus, setRejectStatus] = useState<boolean>(true);
@@ -38,23 +25,29 @@ const ManageLeavesScreen = () => {
 
   // Fetch employees from the backend
   const fetchEmployees = async () => {
+    const toastId = toast.loading("Loading Employee Data..!", { autoClose: 15000 });
     try {
-      const response = await axios.get("http://localhost:5000/employees");
+      const response = await axios.get("http://localhost:5000/users");
+      toast.dismiss(toastId);
       setEmployees(response.data);
     } catch (error) {
+      toast.dismiss(toastId);
       console.error("Error fetching employees:", error);
     }
   };
 
   // Fetch leaves from the backend
   const fetchLeaves = async () => {
+    const toastId = toast.loading("Loading Leave Data..!", { autoClose: 15000 });
     try {
       setLoading(true);
       const response = await axios.get("http://localhost:5000/leaves");
       setLoading(false);
       setLeaves(response.data);
+      toast.dismiss(toastId);
     } catch (error) {
       setLoading(false);
+      toast.dismiss(toastId);
       console.error("Error fetching leaves:", error);
       toast.error("Error fetching leaves!");
     }
@@ -62,12 +55,14 @@ const ManageLeavesScreen = () => {
 
   // Accept leave (PATCH request)
   const handleAcceptLeave = async (leaveId: string) => {
+    const toastId = toast.loading("Submitting..!", { autoClose: 15000 });
     try {
       setAcceptStatus(false);
       await axios.patch(`http://localhost:5000/leaves/${leaveId}`, {
         status: "Approved",
       });
       setAcceptStatus(true);
+      toast.dismiss(toastId);
       toast.success("Leave accepted successfully!");
       fetchLeaves(); // Refetch leaves after update
     } catch (error) {
@@ -79,16 +74,19 @@ const ManageLeavesScreen = () => {
 
   // Reject leave (PATCH request)
   const handleRejectLeave = async (leaveId: string) => {
+    const toastId = toast.loading("Submitting..!", { autoClose: 15000 });
     try {
       setRejectStatus(false);
       await axios.patch(`http://localhost:5000/leaves/${leaveId}`, {
         status: "Rejected",
       });
       setRejectStatus(true);
-      toast.error("Leave rejected successfully!");
+      toast.dismiss(toastId);
+      toast.success("Leave rejected successfully!");
       fetchLeaves(); // Refetch leaves after update
     } catch (error) {
       setRejectStatus(true);
+      toast.dismiss(toastId);
       console.error("Error rejecting leave:", error);
       toast.error("Error rejecting leave!");
     }
@@ -182,7 +180,7 @@ const ManageLeavesScreen = () => {
                           fontWeight: 400,
                         }}
                       >
-                        {employees.find((_id) => leave.user_id)?.name}
+                        {(employees.find((employee) => employee._id === leave.user_id))?.employee.name}
                       </TableCell>
                       <TableCell
                         sx={{

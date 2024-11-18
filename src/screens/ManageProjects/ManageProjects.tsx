@@ -234,14 +234,14 @@ const ManageProjectsScreen = () => {
                                         value={field.value || []}
                                         renderValue={(selected) =>
                                             (selected as string[]).map((id) => {
-                                                const employee = employees.find(emp => emp.id === id);
-                                                return employee ? employee.name : '';
+                                                const employee = employees.find(emp => emp._id === id);
+                                                return employee ? employee.employee.name : '';
                                             }).join(', ')
                                         }
                                     >
                                         {employees.map((employee) => (
-                                            <MenuItem key={employee.id} value={employee.id}>
-                                                {employee.name}
+                                            <MenuItem key={employee._id} value={employee._id}>
+                                                {employee.employee.name}
                                             </MenuItem>
                                         ))}
                                     </Select>

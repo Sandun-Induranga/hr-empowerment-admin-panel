@@ -339,20 +339,16 @@ const ManageEmployeeScreen = () => {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>{isEditing? "Edit Employee": "Add Employee"}</DialogTitle>
+        <DialogTitle sx={{
+              bgcolor: "#16DBCC",
+              color: "white",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}>{isEditing? "Edit Employee": "Add Employee"}</DialogTitle>
         <DialogContent>
           <form onSubmit={isEditing ? handleUpdate : handleSubmit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                {/* <TextField
-                  label="Employee Id"
-                  name="employeeId"
-                  fullWidth
-                  value={formData.employeeId}
-                  onChange={handleInputChange}
-                  disabled={!!selectedEmployee}
-                /> */}
-              </Grid>
+            <Grid container spacing={2} mt={2}>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Name"

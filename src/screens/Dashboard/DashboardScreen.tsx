@@ -21,6 +21,7 @@ import {
 import dayjs from "dayjs";
 import dashboardImage from "../../assets/images/dashboard.jpg";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 ChartJS.register(
   CategoryScale,
@@ -69,11 +70,14 @@ const ManageProjectsDashboard = () => {
 
   // Fetch all employees from /users API
   const fetchEmployees = async () => {
+    const toastId = toast.loading("Loading Data..!", { autoClose: 15000 });
     try {
       const response = await axios.get("http://localhost:5000/users");
       setEmployees(response.data);
+      toast.dismiss(toastId);
     } catch (error) {
       console.error("Error fetching employees:", error);
+      toast.dismiss(toastId);
     }
   };
 

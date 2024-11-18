@@ -11,6 +11,7 @@ import {
 import dayjs from "dayjs";
 import axios from "axios"; // Axios for API calls
 import birthdayImage from "../../assets/images/birthday.jpg";
+import { toast } from "react-toastify";
 
 const BirthdayReminderScreen = () => {
   const [todayBirthdays, setTodayBirthdays] = useState<any[]>([]);
@@ -18,6 +19,7 @@ const BirthdayReminderScreen = () => {
 
   // Fetch employee data from the API
   const fetchEmployees = async () => {
+    const toastId = toast.loading("Loading Employee Data..!", { autoClose: 15000 });
     try {
       const response = await axios.get("http://localhost:5000/users");
       const employees: any[] = response.data;
@@ -41,7 +43,9 @@ const BirthdayReminderScreen = () => {
 
       setTodayBirthdays(todaysBirthdays);
       setUpcomingBirthdays(upcomingWeekBirthdays);
+      toast.dismiss(toastId);
     } catch (error) {
+      toast.dismiss(toastId);
       console.error("Error fetching employees:", error);
     }
   };
